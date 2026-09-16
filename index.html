@@ -4,15 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>와우 포에버 직업 선택 가이드 — 특성 · 레벨링 · 만렙 · PvP</title>
+<meta name="description" content="월드 오브 워크래프트: 포에버의 공식 발표, 시연 빌드, 커뮤니티 분석을 구분해 정리한 직업·종족 선택 가이드">
+<meta name="theme-color" content="#0f1720">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://wow.zamimg.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@600;900&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#0f1720; --bg2:#152030; --panel:#1a2736; --line:#2a3a4d;
   --ink:#e8edf3; --ink2:#a9b6c6; --ink3:#748399;
   --moon:#c9d6ea; --gold:#e0b45c;
-  --fact:#5aa9e6; --mine:#e0b45c; --pred:#8a97a8;
-  --r:8px;
+  --fact:#4ea3e3; --mine:#d7a94b; --pred:#7f8b9b; --ok:#4caf7d; --warn:#e0b45c; --fix:#d76a5a;
+  --r:10px;
 }
 @media (prefers-color-scheme: light){
   :root:not([data-theme="dark"]){
@@ -30,20 +33,46 @@
 }
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans KR",system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;line-height:1.6;font-size:15px}
+html{scroll-behavior:smooth}
+body{background-image:radial-gradient(circle at 15% -10%,rgba(90,169,230,.12),transparent 34rem),radial-gradient(circle at 92% 8%,rgba(224,180,92,.1),transparent 28rem)}
 a{color:var(--moon)}
+a:hover{text-decoration-thickness:2px;text-underline-offset:3px}
 h1,h2,h3{font-family:"Noto Serif KR","Noto Sans KR",serif;margin:0;line-height:1.25}
 .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
 
 /* hero */
-.hero{padding:44px 0 26px;border-bottom:1px solid var(--line)}
-.hero h1{font-size:clamp(26px,4vw,40px);font-weight:900;letter-spacing:-.01em}
-.hero p{margin:12px 0 0;color:var(--ink2);max-width:66ch}
+.hero{position:relative;overflow:hidden;padding:52px 0 30px;border-bottom:1px solid var(--line)}
+.hero::after{content:"";position:absolute;inset:auto -8% -65% auto;width:520px;aspect-ratio:1;border-radius:50%;border:1px solid rgba(224,180,92,.16);box-shadow:0 0 80px rgba(224,180,92,.07);pointer-events:none}
+.kicker{display:flex;align-items:center;gap:8px;color:var(--gold);font-weight:900;font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px}
+.kicker::before{content:"";width:28px;height:1px;background:var(--gold)}
+.hero h1{font-size:clamp(32px,5vw,54px);font-weight:900;letter-spacing:-.035em;max-width:850px}
+.hero h1 em{font-style:normal;color:var(--gold)}
+.hero p{margin:14px 0 0;color:var(--ink2);max-width:72ch;font-size:15.5px}
+.hero-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+.hero-actions a{display:inline-flex;align-items:center;gap:6px;padding:7px 11px;border:1px solid var(--line);border-radius:999px;background:rgba(26,39,54,.72);font-size:12.5px;font-weight:700;text-decoration:none}
+.hero-actions a:hover{border-color:var(--gold);color:var(--gold)}
+.schedule{display:grid;grid-template-columns:repeat(3,minmax(150px,1fr));gap:10px;max-width:760px;margin-top:22px}
+.schedule div{padding:11px 13px;border:1px solid var(--line);border-radius:var(--r);background:rgba(26,39,54,.76);backdrop-filter:blur(8px)}
+.schedule b{display:block;color:var(--gold);font-size:16px}.schedule span{display:block;color:var(--ink2);font-size:11.5px;margin-top:1px}
+@media(max-width:620px){.schedule{grid-template-columns:1fr}.hero{padding-top:38px}}
 .legend{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:16px;font-size:13px;color:var(--ink2)}
 .badge{display:inline-block;padding:1px 7px;border-radius:4px;font-size:11.5px;font-weight:700;vertical-align:middle;letter-spacing:.02em;margin-right:4px}
 .b-fact{background:var(--fact);color:#fff}
 .b-mine{background:var(--mine);color:#1b1b1b}
 .b-pred{background:var(--pred);color:#fff}
 .meta{font-size:12.5px;color:var(--ink3);margin-top:10px}
+
+/* fact check */
+.audit{padding:22px 0 4px}
+.auditbox{border:1px solid var(--line);border-radius:14px;background:linear-gradient(145deg,var(--panel),var(--bg2));padding:18px}
+.audithead{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+.audithead h2{font-size:20px}.audithead p{margin:3px 0 0;color:var(--ink2);font-size:13px}
+.auditgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.auditcard{padding:12px 13px;border:1px solid var(--line);border-radius:8px;background:rgba(15,23,32,.34)}
+.auditcard b{display:flex;align-items:center;gap:7px;font-size:13px;margin-bottom:5px}.auditcard p{margin:0;color:var(--ink2);font-size:12.5px;line-height:1.55}
+.auditcard.ok b{color:var(--ok)}.auditcard.fix b{color:var(--fix)}.auditcard.wait b{color:var(--warn)}
+.dot{width:8px;height:8px;border-radius:50%;background:currentColor;box-shadow:0 0 0 4px color-mix(in srgb,currentColor 16%,transparent)}
+@media(max-width:800px){.auditgrid{grid-template-columns:1fr}}
 
 /* overview table */
 .section{padding:30px 0}
@@ -64,7 +93,8 @@ td small{display:block;color:var(--ink3);font-size:12px;line-height:1.4;margin-t
 .rail{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 0}
 .rail .row{display:flex;gap:8px;overflow-x:auto;scrollbar-width:thin;padding-bottom:2px}
 .cbtn{flex:0 0 auto;display:flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:var(--panel);color:var(--ink);cursor:pointer;font:inherit;font-size:14px;font-weight:700}
-.cbtn svg{width:18px;height:18px}
+.cbtn svg,.cbtn .classicon{width:20px;height:20px}
+.classicon{display:block;object-fit:cover;border-radius:5px;box-shadow:0 0 0 1px rgba(255,255,255,.15)}
 .cbtn[aria-selected="true"]{border-color:var(--c);box-shadow:inset 0 0 0 1px var(--c);color:var(--c)}
 .cbtn:focus-visible{outline:2px solid var(--moon);outline-offset:2px}
 
@@ -72,8 +102,8 @@ td small{display:block;color:var(--ink3);font-size:12px;line-height:1.4;margin-t
 .cpanel{display:none;padding:28px 0 40px}
 .cpanel.on{display:block}
 .chead{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:8px}
-.chead .ico{width:56px;height:56px;border-radius:14px;display:grid;place-items:center;background:var(--bg2);border:2px solid var(--c)}
-.chead .ico svg{width:32px;height:32px}
+.chead .ico{width:60px;height:60px;border-radius:14px;display:grid;place-items:center;background:var(--bg2);border:2px solid var(--c);overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.22)}
+.chead .ico svg{width:32px;height:32px}.chead .ico .classicon{width:100%;height:100%;border-radius:11px}
 .chead h2{font-size:30px;font-weight:900;color:var(--c)}
 .chead .tag{color:var(--ink2);font-size:14px}
 .base{margin:10px 0 18px;padding:12px 14px;background:var(--bg2);border-left:3px solid var(--c);border-radius:0 var(--r) var(--r) 0;font-size:14px}
@@ -97,7 +127,7 @@ td small{display:block;color:var(--ink3);font-size:12px;line-height:1.4;margin-t
 details.more{border-top:1px dashed var(--line);padding-top:8px}
 details.more summary{cursor:pointer;font-size:13px;color:var(--moon);font-weight:700;list-style:none}
 details.more summary::before{content:"▸ "}details.more[open] summary::before{content:"▾ "}
-.opener .sk img{width:18px;height:18px}
+.opener .sk{display:inline-flex;align-items:center;gap:5px}.opener .sk img{width:20px;height:20px}
 .rate .k{color:var(--ink2);white-space:nowrap;font-weight:700}
 .rate .v{color:var(--ink)}
 .rate .v .pips{margin-right:6px}
@@ -128,7 +158,7 @@ details.more summary::before{content:"▸ "}details.more[open] summary::before{c
 .ovgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
 .ovcard{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;cursor:pointer;border-top:3px solid var(--c)}
 .ovcard h3{font-size:17px;color:var(--c);display:flex;align-items:center;gap:8px}
-.ovcard h3 svg{width:20px;height:20px}
+.ovcard h3 svg,.ovcard h3 .classicon{width:26px;height:26px}
 .ovcard .m{display:grid;grid-template-columns:52px 1fr;gap:6px 10px;align-items:center;font-size:12px;color:var(--ink2);margin:10px 0 8px}
 .ovcard .m .bar{width:auto;margin-right:20px}
 .ovcard p{margin:0;font-size:12.5px;color:var(--ink3);line-height:1.45}
@@ -140,7 +170,7 @@ details.more summary::before{content:"▸ "}details.more[open] summary::before{c
 .rate .v .bar{flex:0 0 100px}
 .ostrip{display:flex;flex-wrap:wrap;align-items:flex-start;gap:4px}
 .ostrip .st{display:flex;flex-direction:column;align-items:center;width:64px;text-align:center;font-size:10.5px;line-height:1.2;color:var(--ink2)}
-.ostrip .st .ic{width:36px;height:36px;border-radius:7px;border:2px solid var(--c);background:var(--bg2);display:grid;place-items:center;font-weight:900;color:var(--c);font-size:13px;overflow:hidden;margin-bottom:3px}
+.ostrip .st .ic{width:42px;height:42px;border-radius:8px;border:2px solid var(--c);background:var(--bg2);display:grid;place-items:center;font-weight:900;color:var(--c);font-size:14px;overflow:hidden;margin-bottom:4px;box-shadow:0 5px 14px rgba(0,0,0,.18)}
 .ostrip .st .ic img{width:100%;height:100%;object-fit:cover}
 .ostrip .ar{align-self:center;color:var(--ink3);font-size:14px;margin-top:-14px}
 .roletags{display:flex;gap:5px;flex-wrap:wrap;margin-top:4px}
@@ -149,43 +179,58 @@ details.more summary::before{content:"▸ "}details.more[open] summary::before{c
 </head>
 <body>
 
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <symbol id="i-warrior" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 20l6-6M14 4l6 6-9 9-6-6zM13 11l3-3M3 21l2-2"/></symbol>
-  <symbol id="i-paladin" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 3v18M6 9h12M9 6h6M9 21h6"/><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".5"/></symbol>
-  <symbol id="i-shaman" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M13 2L6 13h5l-1 9 8-12h-5z"/></symbol>
-  <symbol id="i-hunter" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M5 3c8 2 12 8 14 18M5 3l14 18M12 12l5-5M17 7h-4M17 7v4"/></symbol>
-  <symbol id="i-rogue" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 4l8 8M20 4l-8 8M12 12l-4 8M12 12l4 8M6 11l-2 2M18 11l2 2"/></symbol>
-  <symbol id="i-druid" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M20 4c-9 0-14 5-14 12 0 2 1 4 3 4 7 0 11-6 11-16zM6 20c2-6 6-9 10-11"/></symbol>
-  <symbol id="i-priest" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M19 5l-3 3M8 16l-3 3"/></symbol>
-  <symbol id="i-mage" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 3l2.5 5.5L20 10l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-1.5z"/></symbol>
-  <symbol id="i-warlock" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 3c-4 4-7 7-7 11a7 7 0 0014 0c0-4-3-7-7-11zM12 10c-1.5 2-3 3-3 5a3 3 0 006 0c0-2-1.5-3-3-5z"/></symbol>
-</svg>
-
 <header class="hero">
   <div class="wrap">
-    <h1>와우 포에버 직업 선택 가이드</h1>
-    <p>특성 개편 요점, 레벨링, 만렙 이후, PvP까지 한 장에. 블리즈컨 2026 공식 발표와 현장 시연 캡처를 근거로 정리했고, 아직 확정되지 않은 부분은 예측이라고 표시했습니다.</p>
+    <div class="kicker">World of Warcraft: Forever</div>
+    <h1>와우 포에버 <em>직업 선택 가이드</em></h1>
+    <p>공식 발표, 블리즈컨 시연 빌드, 커뮤니티 분석을 섞지 않고 구분했습니다. 직업별 특성 변화부터 레벨링·만렙 PvE·PvP 전망까지 빠르게 비교해보세요.</p>
+    <div class="schedule" aria-label="주요 일정">
+      <div><b>9월 17일</b><span>베타 시작 · 공식 발표</span></div>
+      <div><b>11월 5일 새벽(한국)</b><span>공식 공지 11월 4일 15:00 PDT 기준 · 서머타임 종료 직후라 07시/08시 여부는 출시 공지 확인</span></div>
+      <div><b>12월 9일</b><span>신규 레이드 해금</span></div>
+    </div>
+    <div class="hero-actions">
+      <a href="#overview">직업 한눈에 보기 ↓</a>
+      <a href="#race-section">종족 특성 비교 ↓</a>
+      <a href="#trees">특성 계산기 ↓</a>
+    </div>
     <div class="legend">
       <span><span class="badge b-fact">공식</span>블리자드 패널·보도자료·개발진 인터뷰</span>
-      <span><span class="badge b-mine">캡처</span>블리즈컨 시연 화면·데이터마이닝 (수치 변경 가능)</span>
-      <span><span class="badge b-pred">예측</span>커뮤니티 분석·티어 예측 (베타에서 검증 필요)</span>
+      <span><span class="badge b-mine">시연빌드</span>블리즈컨 플레이 화면·툴팁 판독 (변경 가능)</span>
+      <span><span class="badge b-pred">분석</span>커뮤니티 평가·오프너·별점 (검증 전)</span>
     </div>
-    <p class="meta">기준일 2026-09-16 (v4.1: 신규 스킬 임시 아이콘) · 베타 9/17 시작 · 출시 11/4 · 첫 레이드 12/9. 별점은 예측이며 5점 만점. 직업 문양은 이 페이지용으로 새로 그린 것이고, 포에버 신규 스킬(관통 일격·맹독·선견자의 격노 등)은 공식 아이콘 공개 전이라 비슷한 기존 아이콘을 임시로 썼습니다.</p>
+    <p class="meta">교차검증 기준일 2026-09-16 · 별점은 공식 순위가 아닌 사전 분석이며 5점 만점 · 한국어 기술명은 정식 번역 공개 전 임시 번역이 포함됩니다. 포에버 신규 기술은 정식 아이콘 공개 전까지 비슷한 기존 아이콘을 임시로 사용합니다.</p>
   </div>
 </header>
 
-<section class="section">
+<section class="audit" aria-labelledby="audit-title">
   <div class="wrap">
-    <h2>한눈에 보기</h2>
-    <p class="sub">세 갈래로 나눠 봤을 때 각 직업의 위치. 자세한 근거는 아래 직업 탭에서.</p>
-    <div class="ovgrid" id="overview"></div>
+    <div class="auditbox">
+      <div class="audithead">
+        <div><h2 id="audit-title">교차검증 결과</h2><p>공식 발표를 1순위, 시연 캡처를 2순위로 대조했습니다.</p></div>
+        <span class="badge b-fact">2026.09.16 검증</span>
+      </div>
+      <div class="auditgrid">
+        <div class="auditcard ok"><b><span class="dot"></span>공식 확인</b><p>베타·출시·레이드 일정, 레벨 1–60, 스카이본 진영별 직업, 신규 종족×직업 6종, 특성 마일스톤과 성기사 핵심 변경.</p></div>
+        <div class="auditcard fix"><b><span class="dot"></span>오류 수정</b><p>돌가죽 물리 피해 감소 10%, 언데드·타우렌·트롤 종특 구성, 스카이본 사제·흑마 조합, 일부 도적 오프너 표기를 바로잡았습니다.</p></div>
+        <div class="auditcard wait"><b><span class="dot"></span>베타 확인 필요</b><p>성기사를 제외한 세부 특성 수치 대부분은 시연 빌드 판독입니다. 별점·추천 종족·예상 오프너는 공식 정보가 아닌 편집 분석입니다.</p></div>
+      </div>
+    </div>
   </div>
 </section>
 
-<section class="section">
+<section class="section" id="overview">
+  <div class="wrap">
+    <h2>한눈에 보기</h2>
+    <p class="sub">세 갈래로 나눠 봤을 때 각 직업의 위치. 자세한 근거는 아래 직업 탭에서.</p>
+    <div class="ovgrid" id="overview-grid"></div>
+  </div>
+</section>
+
+<section class="section" id="race-section">
   <div class="wrap">
     <h2>종족 특성 한눈에</h2>
-    <p class="sub">모든 종족이 액티브 2개 + 패시브 2개 구조로 재설계됐습니다. 수치는 블리즈컨 시연 기준이라 바뀔 수 있어요. <span class="badge b-mine">캡처</span></p>
+    <p class="sub">모든 종족이 액티브 2개 + 패시브 2개 구조로 재설계됐습니다. 기술 수치는 시연 빌드, PvP 가치 별점은 편집 분석입니다. <span class="badge b-mine">시연빌드</span> <span class="badge b-pred">분석</span></p>
     <div class="tablewrap">
       <table id="races">
         <thead><tr><th>종족</th><th>액티브</th><th>패시브</th><th>PvP 가치</th><th>잘 맞는 직업</th></tr></thead>
@@ -217,15 +262,15 @@ details.more summary::before{content:"▸ "}details.more[open] summary::before{c
 
 <footer class="foot">
   <div class="wrap">
-    <b>근거 자료</b>
+    <b>검증에 사용한 근거 자료</b>
     <ul>
-      <li>블리자드 공식: <a href="https://news.blizzard.com/en-us/article/24303313/world-of-warcraft-forever-deep-dive-panel-recap" target="_blank" rel="noopener">Deep Dive 패널 리캡</a>, <a href="https://worldofwarcraft.blizzard.com/en-us/news/24302093" target="_blank" rel="noopener">What's Next 발표문</a></li>
-      <li>종족 특성·조합: <a href="https://www.wowhead.com/forever/guide/new-race-class-combinations" target="_blank" rel="noopener">Wowhead</a>, <a href="https://mobalytics.gg/gamebase/guides/wow-forever-racial-abilities" target="_blank" rel="noopener">Mobalytics 종특 정리</a></li>
-      <li>특성 캡처: <a href="https://classicwowforever.com/class-changes/" target="_blank" rel="noopener">classicwowforever.com 1.12 대비 변경 비교</a>, r/classicwow 직업 변경 요약글</li>
-      <li>진행 모델: <a href="https://guided.news/en/news/wow-forever-stays-at-level-60-heres-how-progression-works-afterward/" target="_blank" rel="noopener">Guided.news — 60 고정 이후 진행 방식</a></li>
-      <li>PvP 예측: <a href="https://boostroom.com/blog/wow-forever-pvp-guide-honor-world-pvp-battlegrounds-and-best-classes" target="_blank" rel="noopener">BoostRoom PvP 가이드</a>, <a href="https://www.aoeah.com/news/4820--wow-forever-pvp-tier-list--best-pvp-class-ranking-in-classic" target="_blank" rel="noopener">aoeah 스펙별 PvP 티어 예측</a></li>
+      <li><b>1차 자료:</b> 블리자드 <a href="https://news.blizzard.com/en-us/article/24303862/world-of-warcraft-forever-whats-next-panel-recap" target="_blank" rel="noopener">What's Next 패널 리캡</a>, <a href="https://news.blizzard.com/en-us/article/24303313/world-of-warcraft-forever-deep-dive-panel-recap" target="_blank" rel="noopener">Deep Dive 패널 리캡</a></li>
+      <li><b>종족·조합:</b> <a href="https://www.wowhead.com/forever/guide/new-race-class-combinations" target="_blank" rel="noopener">Wowhead 사전 가이드</a> — 미출시 정보이며 변경 가능</li>
+      <li><b>특성 시연 캡처:</b> <a href="https://classicwowforever.com/class-changes/" target="_blank" rel="noopener">Classic WoW Forever 1.12 비교</a> — 독립 사이트의 캡처 판독 자료로 공식 데이터가 아님</li>
+      <li><b>평가·별점:</b> 공식 티어가 아니라 시연 빌드와 클래식 경험을 바탕으로 한 편집 분석. 베타가 시작되면 실제 수치·로그 기준으로 재검증 필요</li>
     </ul>
-    <p>공통 변경(전 직업): 특성 트리 11·16·21·31 마일스톤 구조, 핵심 버프 특성(신령·왕의 축복·야생의 징표 강화 등) 기본 스킬화, 주문·근접·원거리 적중 통합, 치명타 통합, 종족 특성 액티브 2 + 패시브 2. 오프너는 클래식 기본 사이클에 새 기술을 얹은 예상안이며 베타에서 확인 후 갱신 예정.</p>
+    <p>공식 확인된 공통 변경: 기존 11·21·31포인트 핵심 특성에 16포인트 마일스톤 추가, 신의 권능: 정신력·왕의 축복·야생의 징표 연마 등 핵심 버프의 기본 기술화, 주문·근접·원거리 적중 및 치명타 통합, 종족 특성 액티브 2 + 패시브 2. 성기사를 제외한 세부 특성 수치와 모든 오프너는 시연 캡처·분석 단계입니다.</p>
+    <p class="meta">직업·기술 아이콘은 Blizzard의 World of Warcraft 게임 아트워크를 Wowhead CDN에서 불러옵니다. 이 페이지는 Blizzard Entertainment와 제휴하거나 공식 승인된 페이지가 아닙니다.</p>
   </div>
 </footer>
 <button class="themebtn" id="theme">테마 전환</button>
@@ -234,7 +279,7 @@ details.more summary::before{content:"▸ "}details.more[open] summary::before{c
 /* 스킬 아이콘 훅: 페이지를 직접 호스팅할 때 스킬명 → 이미지 URL을 채우면 배지 앞에 아이콘이 붙습니다.
    빈 문자열('')은 아이콘 없이 이름만 표시됩니다. 자체 호스팅에서만 외부 이미지가 뜹니다. */
 const ICONS={
-  '가로막기':'https://wow.zamimg.com/images/wow/icons/medium/ability_rogue_garrote.jpg',
+  '목조르기':'https://wow.zamimg.com/images/wow/icons/medium/ability_rogue_garrote.jpg',
   '갈기갈기':'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_vampiricaura.jpg',
   '갈퀴 발톱':'https://wow.zamimg.com/images/wow/icons/medium/ability_druid_disembowel.jpg',
   '강타':'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_holysmite.jpg',
@@ -245,7 +290,8 @@ const ICONS={
   '광폭화':'https://wow.zamimg.com/images/wow/icons/medium/ability_druid_berserk.jpg',
   '광폭화 격노':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_ancestralguardian.jpg',
   '급류':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_riptide.jpg',
-  '급소 가격':'https://wow.zamimg.com/images/wow/icons/medium/ability_cheapshot.jpg',
+  '급소 가격':'https://wow.zamimg.com/images/wow/icons/medium/ability_rogue_kidneyshot.jpg',
+  '비열한 습격':'https://wow.zamimg.com/images/wow/icons/medium/ability_cheapshot.jpg',
   '급속 성장':'https://wow.zamimg.com/images/wow/icons/medium/ability_druid_flourish.jpg',
   '난도질':'https://wow.zamimg.com/images/wow/icons/medium/ability_rogue_slicedice.jpg',
   '날개 절단':'https://wow.zamimg.com/images/wow/icons/medium/ability_rogue_trip.jpg',
@@ -347,7 +393,7 @@ const ICONS={
   '표범 은신':'https://wow.zamimg.com/images/wow/icons/medium/ability_ambush.jpg',
   '피의 갈증':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_bloodlust.jpg',
   '필사의 일격':'https://wow.zamimg.com/images/wow/icons/medium/ability_warrior_savageblow.jpg',
-  '할퀴기':'https://wow.zamimg.com/images/wow/icons/medium/ability_druid_bash.jpg',
+  '암습':'https://wow.zamimg.com/images/wow/icons/medium/ability_druid_supriseattack.jpg',
   '해충 떼':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_insectswarm.jpg',
   '화염 작열':'https://wow.zamimg.com/images/wow/icons/medium/spell_fire_fireball02.jpg',
   '화염 충격':'https://wow.zamimg.com/images/wow/icons/medium/spell_fire_flameshock.jpg',
@@ -355,9 +401,21 @@ const ICONS={
   '흉포한 이빨':'https://wow.zamimg.com/images/wow/icons/medium/ability_druid_ferociousbite.jpg',
   '희망 흡수':'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_lifedrain02.jpg'
 };
-const F='<span class="badge b-fact">공식</span>',M='<span class="badge b-mine">캡처</span>',P='<span class="badge b-pred">예측</span>';
+const F='<span class="badge b-fact">공식</span>',M='<span class="badge b-mine">시연빌드</span>',P='<span class="badge b-pred">분석</span>';
+const CLASS_ICONS={
+ warrior:'https://wow.zamimg.com/images/wow/icons/large/classicon_warrior.jpg',
+ paladin:'https://wow.zamimg.com/images/wow/icons/large/classicon_paladin.jpg',
+ shaman:'https://wow.zamimg.com/images/wow/icons/large/classicon_shaman.jpg',
+ hunter:'https://wow.zamimg.com/images/wow/icons/large/classicon_hunter.jpg',
+ rogue:'https://wow.zamimg.com/images/wow/icons/large/classicon_rogue.jpg',
+ druid:'https://wow.zamimg.com/images/wow/icons/large/classicon_druid.jpg',
+ priest:'https://wow.zamimg.com/images/wow/icons/large/classicon_priest.jpg',
+ mage:'https://wow.zamimg.com/images/wow/icons/large/classicon_mage.jpg',
+ warlock:'https://wow.zamimg.com/images/wow/icons/large/classicon_warlock.jpg'
+};
+const classIcon=c=>`<img class="classicon" src="${CLASS_ICONS[c.id]}" alt="${c.name} 직업 아이콘" loading="lazy" decoding="async" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'${c.name[0]}'}))">`;
 const pip=n=>'<span class="bar" aria-label="'+n+'/5"><i style="width:'+(n*20)+'%"></i><b>'+n+'</b></span>';
-const sk=s=>'<span class="sk">'+(ICONS[s]?'<img src="'+ICONS[s]+'" alt="" onerror="this.remove()" style="width:18px;height:18px;vertical-align:-4px;margin-right:5px;border-radius:3px">':'')+s+'</span>';
+const sk=s=>'<span class="sk">'+(ICONS[s]?'<img src="'+ICONS[s]+'" alt="" loading="lazy" decoding="async" onerror="this.remove()">':'')+s+'</span>';
 
 const CLASSES=[
 {id:'warrior',name:'전사',color:'#C79C6E',icon:'i-warrior',tag:'근접 물리, 방어구 판금',
@@ -470,13 +528,13 @@ const CLASSES=[
   lv:3,lvn:'독 유지 사냥, 회복 없음',pve:5,pven:'단검 도적 PvE 정답 예측',pvp:4,pvpn:'A 예측. 장비 붙으면 실제 1위 가능성',
   pros:['독이 진짜 빌드','냉혈 접근 쉬움','미러전 개인 딜 상향'],cons:['콤보 생성 무작위성↑','돌가죽 드워프에 독 끊김'],
   race:'<b>인간</b>(은신 감지·기절 해제) / <b>노움</b>(기력 5%) / <b>오크</b>(저주 해제·도끼)',
-  op:[sk('급소 가격')+' 은신 오프너',sk('절단')+' x2',sk('맹독')+' 유지',sk('절단')+' → '+sk('절개'),sk('냉혈')+' 절개 크리'],opn:'맹독 유지 + 독 갱신이 사이클의 중심.'},
+  op:[sk('비열한 습격')+' 은신 오프너',sk('절단')+' x2',sk('맹독')+' 유지',sk('급소 가격')+' 또는 '+sk('절개'),sk('냉혈')+' 절개 크리'],opn:'맹독 유지 + 독 갱신이 사이클의 중심.'},
  {n:'전투',role:'검·도끼 지속 딜',
   ch:[M+'쉼 없는 칼날(4행 신규): 피해 마무리 기술이 아드레날린 촉진·칼날 부채·회피·전력 질주·소멸 쿨 콤보당 2초 감소',M+'무기 숙련 → 무시·회피당할 확률 1% 감소',M+'쌍수 무기 전문화 1랭크 10%→5%'],
   lv:4,lvn:'칼날 부채 광역, 회피 자주 돌아옴',pve:4,pven:'긴 전투에서 아드레날린 추가 사용',pvp:4,pvpn:'A 예측. 소멸·회피 회전율이 PvP 핵심',
   pros:['생존기 쿨 감소','비단검 자유','안정성'],cons:['등 뒤 찌르기 비싸 싼 빌더 강제','폭딜은 암살보다 낮음'],
   race:'<b>인간</b>(검 치명타 2% + 은신 감지) / <b>오크</b>(도끼·혈기) / <b>노움</b>(전장)',
-  op:[sk('급소 가격')+' 또는 '+sk('가로막기'),sk('사악한 일격')+' x4~5',sk('난도질')+' 유지',sk('절개'),'쿨 감소로 '+sk('아드레날린 촉진')+' 재사용'],opn:'마무리 기술을 자주 쓸수록 생존기가 빨리 돈다.'},
+  op:[sk('비열한 습격')+' 또는 '+sk('목조르기'),sk('사악한 일격')+' x4~5',sk('난도질')+' 유지',sk('절개'),'쿨 감소로 '+sk('아드레날린 촉진')+' 재사용'],opn:'마무리 기술을 자주 쓸수록 생존기가 빨리 돈다.'},
  {n:'잠행',role:'단검 오프너 / PvP 특화',
   ch:[M+'출혈 재편: 무기 100%(단검 145%), 대상이 내 파열 피해 15% 더 받음, 15초',M+'목 베기(6행 신규): 등 뒤 찌르기 시 다음 매복 은신 없이 사용(확률, 캡처 3%/원글 15%)',M+'천 번의 베기(7행 신규): 파열 틱마다 다음 출혈·등 뒤 찌르기 기력 -3, 5중첩',M+'예지력 21pt로 이동 → 냉혈과 동시 선택 가능'],
   lv:2,lvn:'단일 폭딜형, 다수 사냥 약함',pve:2,pven:'PvE 자리 거의 없음',pvp:2,pvpn:'D 예측(트리 특성 다수 무용). 단, 예지력+냉혈 동시 선택으로 오프너는 역대 최강',
@@ -501,9 +559,9 @@ const CLASSES=[
   lv:4,lvn:'표범 은신·곰 탱·자힐. 안정적',pve:4,pven:'곰탱 A 예측(광폭화 다중 짓이기기, 전투 부활). 표범 딜은 C 예측',pvp:3,pvpn:'직업 S(기동·탈출) / 표범 딜 C. 나엘 엘룬의 빛 15초 = 광폭화 15초',
   pros:['광폭화 공포 면역 15초','은신·여행 형상·자힐 = 최고 생존','5인 곰탱 가능'],cons:['표범 딜 낮음(짓이기기 곰 전용이면)','냉법 뿌리 상성 여전히 힘듦','포인트 부족'],
   race:'<b>나이트 엘프</b>(엘룬의 빛 치명타 10% 15초, 사망 시 이속 75%) / <b>타우렌</b>(전쟁 발구르기)',
-  op:[sk('표범 은신')+' 접근 → '+sk('할퀴기')+' 기절',sk('갈퀴 발톱')+' → '+sk('갈기갈기')+' x2',sk('광폭화')+' + '+sk('엘룬의 빛')+' 동시',sk('흉포한 이빨')+' 마무리',sk('곰 변신')+' 버티기 / '+sk('여행 형상')+' 이탈'],opn:'표범 딜이 진짜 C면 곰·힐 비중을 높인 "안 죽는 야드"로.'},
+  op:[sk('표범 은신')+' 접근 → '+sk('암습')+' 기절',sk('갈퀴 발톱')+' → '+sk('갈기갈기')+' x2',sk('광폭화')+' + '+sk('엘룬의 빛')+' 동시',sk('흉포한 이빨')+' 마무리',sk('곰 변신')+' 버티기 / '+sk('여행 형상')+' 이탈'],opn:'표범 딜이 진짜 C면 곰·힐 비중을 높인 "안 죽는 야드"로.'},
  {n:'복원',role:'HoT 힐',
-  ch:[M+'급속 성장(궁극기): 광역 지속 힐',M+'신속한 치유 16pt로 앞당김',M+'대지어머니의 선물: 회복·신속한 치유·급속 성장 글쿨 0.5초 감소',F+'버프·디버프 상한 해제 → 복원 드루 다수 중첩 가능'],
+  ch:[M+'급속 성장(궁극기): 광역 지속 힐',M+'신속한 치유 16pt로 앞당김',M+'대지어머니의 선물: 회복·신속한 치유·급속 성장 글쿨 0.5초 감소',M+'버프·디버프 상한 해제 여부는 시연·패널 추가 확인 필요'],
   lv:2,lvn:'힐 스펙 레벨링 느림',pve:4,pven:'급속 성장 하나로 A 예측, 다수 기용 가능',pvp:4,pvpn:'A(힐) 예측. 기동·은신 힐러',
   pros:['급속 성장','즉시시전 힐 회전','은신·여행 형상'],cons:['정화·마나 압박에 약함'],
   race:'<b>나이트 엘프</b>(회복 크리 확정용 엘룬의 빛) / <b>타우렌</b>',
@@ -512,7 +570,7 @@ const CLASSES=[
 
 {id:'priest',name:'사제',color:'#8fa3bd',icon:'i-priest',tag:'신성/암흑, 노움 신규',
  base:'<b>기본 스킬화</b> 죽음의 선고, 파멸의 역병, 공포의 수호물(전 종족). 종족 사제 기술 유지·개편: 언데드 암흑 희생(대형 흡수), 드워프 징벌(짧은 속박)+필사의 기도, 인간 신성한 은총(약화된 영혼 제거 후 힐), 나엘 별의 파편·요정의 은총. '+M,
- races:['인간','드워프','나이트 엘프','노움','스카이본','언데드','트롤'],
+ races:['인간','드워프','나이트 엘프','노움','언데드','트롤'],
  ov:{lv:3,lvn:'강타 사제 빌드 생김, 암흑 마나 50%↓',pve:5,pven:'수양 S 예측, 암흑 PvE 최적화',pvp:3,pvpn:'암흑 B 예측, 수양 S(힐)',sum:'수양이 크게 올라왔고 암흑은 도트 크리로 안정. 종족 사제 기술 때문에 종족 선택이 특히 중요.'},
  specs:[
  {n:'수양',role:'보호막 힐 + 마력 주입',
@@ -562,7 +620,7 @@ const CLASSES=[
 
 {id:'warlock',name:'흑마법사',color:'#9482C9',icon:'i-warlock',tag:'도트·악마 캐스터, 트롤 신규',
  base:'<b>공통</b> 도트가 치명타 적용. 고통의 저주 → 고통의 재앙(원소의 저주와 중첩). 소각(신규 화염 주문). 악마 없이 고통/파괴 플레이 용이. '+M,
- races:['인간','노움','스카이본','오크','언데드','트롤'],
+ races:['인간','노움','오크','언데드','트롤'],
  ov:{lv:5,lvn:'악마 탱·흡수. 최상위 레벨링 예측',pve:4,pven:'도트 크리로 상향',pvp:3,pvpn:'세 트리 모두 B, 악마 결투 최강 예측. 최대 변수',sum:'예측글이 공통으로 "가장 큰 와일드카드"로 꼽는 직업. 메타 자리 잡으면 A 가능.'},
  specs:[
  {n:'고통',role:'도트 소모전',
@@ -589,14 +647,14 @@ const CLASSES=[
 
 const RACES=[
  {f:'얼라',n:'인간',a:'생존 의지(기절 해제) · 감지(은신 감지 20초)',p:'검 사용 시 주문·기술 치명타 2% · 정신력 5%',pvp:5,pvpn:'얼라 PvP 종특 정점. 도적·전사·미러전 상대 생존 직결',cls:'도적, 전사, 성기사, 사냥꾼(신규), 마법사'},
- {f:'얼라',n:'드워프',a:'돌가죽(출혈·독·질병 면역 + 물리 피해 감소 8초)',p:'철퇴 치명타 1% · 야수 상대 피해 5%',pvp:4,pvpn:'도적·전사·사냥꾼 상대 최고 방어 종특',cls:'주술사(신규, 얼라 유일), 성기사, 사제, 사냥꾼, 전사'},
+ {f:'얼라',n:'드워프',a:'돌가죽(출혈·독·질병 제거·면역 + 물리 피해 10% 감소, 8초) · 보물 찾기',p:'철퇴 장착 시 모든 주문·공격 치명타 1% · 야수 상대 피해 5%',pvp:4,pvpn:'도적·전사·사냥꾼 상대 강한 방어 종특',cls:'주술사(신규, 얼라 유일), 성기사, 사제, 사냥꾼, 전사'},
  {f:'얼라',n:'나이트 엘프',a:'엘룬의 빛(15초 치명타 10%) · 그림자 숨기',p:'회피 1% + 이동속도 2% · 사망 시 이동속도 75%',pvp:4,pvpn:'폭딜 쿨기 생김. 광폭화 15초와 겹치는 야드, 저격 사냥꾼',cls:'드루이드, 사냥꾼, 도적, 전사, 사제'},
- {f:'얼라',n:'노움',a:'탈출의 명수(속박·감속 해제 + 잠시 면역) · 유레카!(다음 3개 기술 비용 감소 + 피해·치유 10%)',p:'최대 마나·분노·기력 5% · 기계공학 특화',pvp:4,pvpn:'전장 특화. 분노·기력에도 5%가 적용돼 전사·도적이 진지한 선택지',cls:'마법사, 흑마법사, 전사, 도적, 사제(신규)'},
+ {f:'얼라',n:'노움',a:'탈출의 명수(속박·감속 해제 + 잠시 면역) · 유레카!(다음 3개 기술 비용 감소 + 피해·치유 10%)',p:'최대 마나·분노·기력 5%(시연 툴팁) · 기계공학 장치 신뢰도 향상',pvp:4,pvpn:'속박·감속 대응과 유레카 폭딜이 강점. 자원 5%가 분노·기력에도 적용돼 전사·도적도 후보',cls:'마법사, 흑마법사, 전사, 도적, 사제(신규)'},
  {f:'얼라',n:'스카이본',a:'공중 보행(10초 활강) · 지맥 활성화(체력·마나 재생 100%↑)',p:'가속 1% · 정령 피해 5%',pvp:2,pvpn:'전투 중 쓸 게 없어 PvP 후순위. 레벨링 편의',cls:'전사, 사냥꾼, 도적, 드루이드, 마법사(얼라)'},
  {f:'호드',n:'오크',a:'피의 격노(15초 공격력·주문력 10%) · 저주 분쇄(저주 해제·면역 + 마법 피해 감소)',p:'강인함(기절 지속 20% 감소) · 도끼 치명타 1%',pvp:5,pvpn:'공격 쿨기 + 저주 해제. 흑마 상대 우위. 예측글 호드 최강',cls:'전사, 주술사, 사냥꾼, 도적, 흑마법사, 마법사(신규)'},
- {f:'호드',n:'언데드',a:'포세이큰의 의지(매혹·공포·수면 해제, 면역은 삭제) · 암흑 희생(사제 전용 흡수)',p:'무덤의 손길(피해 시 생명력 흡수) · 암흑 저항',pvp:4,pvpn:'흑마·사제 공포 상대 여전히 강함. 면역 삭제로 클래식보다 한 단계 아래',cls:'사제, 흑마법사, 도적, 마법사, 전사, 성기사(신규)'},
- {f:'호드',n:'타우렌',a:'전쟁 발구르기(주변 2초 기절)',p:'체력 증가 · 채집 속도',pvp:3,pvpn:'광역 기절 하나로 근접·힐러에게 실용적',cls:'드루이드, 전사, 주술사, 사냥꾼'},
- {f:'호드',n:'트롤',a:'광폭화(10초 시전·공격 속도 10%) · 재생(체력 재생, 전투 중 일부 유지)',p:'활·투척 치명타 1% · 야수 상대 피해 5%',pvp:4,pvpn:'모든 딜러에게 통하는 가속 쿨기. 흑마 생명력 전환과 시너지',cls:'사냥꾼, 주술사, 사제, 마법사, 도적, 흑마법사(신규)'},
+ {f:'호드',n:'언데드',a:'포세이큰의 의지(매혹·공포·수면 해제, 면역 없음) · 시체먹기(10초간 2초마다 생명력·마나 7%)',p:'무덤의 손길(공격 시 5% 확률 생명력 흡수) · 수중 호흡 300% 연장',pvp:4,pvpn:'공포 해제는 여전히 강하지만 면역은 사라짐. 시체먹기는 레벨링 회복에 유용',cls:'사제, 흑마법사, 도적, 마법사, 전사, 성기사(신규)'},
+ {f:'호드',n:'타우렌',a:'평원 질주(계속 이동하면 이동속도 증가) · 전쟁 발구르기(주변 2초 기절)',p:'최대 생명력 증가 · 약초 채집 보너스(세부 수치 베타 확인 필요)',pvp:3,pvpn:'광역 기절과 평원 질주가 실용적. 체력 수치는 베타 확인 필요',cls:'드루이드, 전사, 주술사, 사냥꾼'},
+ {f:'호드',n:'트롤',a:'광폭화(10초간 시전·공격 속도 10%) · 급속 재생(시간에 걸쳐 최대 생명력 50% 회복)',p:'전투 중 생명력 재생 10% 유지 · 야수 상대 피해 5%',pvp:4,pvpn:'가속 쿨기와 별도 회복기가 강점. 기존 활·투척 전문화 표기는 확인되지 않음',cls:'사냥꾼, 주술사, 사제, 마법사, 도적, 흑마법사(신규)'},
  {f:'호드',n:'스카이본',a:'공중 보행(10초 활강) · 이동속도 10% 버프(호드)',p:'가속 1% · 정령 피해 5%',pvp:3,pvpn:'얼라 스카이본보다 PvP 유리(이속). 그래도 중하위',cls:'전사, 사냥꾼, 도적, 드루이드, 주술사(호드)'}
 ];
 
@@ -605,7 +663,7 @@ const RR={
  warrior:[
   {r:'인간(얼)',pve:5,pvp:5,w:'검 치명타 2% + 기절 해제 + 은신 감지. 필드 1:1 올라운더'},
   {r:'노움(얼)',pve:3,pvp:5,w:'속박·감속 면역으로 "못 붙는" 약점 해결, 분노 5%. 전장 특화'},
-  {r:'오크(호)',pve:5,pvp:5,w:'도끼 치명타·피의 격노·기절 20%↓, 강철 의지와 중첩 35%'},
+  {r:'오크(호)',pve:5,pvp:5,w:'도끼 치명타·피의 격노·기절 지속시간 20%↓. 강철 의지와의 실제 중첩 방식은 베타 확인 필요'},
   {r:'트롤(호)',pve:4,pvp:3,w:'광폭화 가속. 재생은 레벨링 편의. 예측글은 "최고 탱은 이제 아님"'},
   {r:'드워프(얼)',pve:3,pvp:4,w:'돌가죽으로 도적·출혈 대응. 철퇴 빌드'},
   {r:'타우렌(호)',pve:3,pvp:3,w:'체력·전쟁 발구르기. 탱 선호'},
@@ -658,8 +716,7 @@ const RR={
   {r:'오크(호)',pve:5,pvp:5,w:'피의 격노 주문력, 펫 강화, 저주 해제'},
   {r:'언데드(호)',pve:4,pvp:5,w:'무덤의 손길 + 생명력 흡수 = 파밍 무한, 공포 해제'},
   {r:'노움(얼)',pve:5,pvp:5,w:'마나 5%·속박 면역·유레카. 얼라 흑마 정석'},
-  {r:'인간(얼)',pve:4,pvp:4,w:'기절 해제, 정신력'},
-  {r:'스카이본(얼)',pve:3,pvp:2,w:'가속 1%. 후순위'}]
+  {r:'인간(얼)',pve:4,pvp:4,w:'기절 해제, 정신력'}]
 };
 
 
@@ -685,18 +742,19 @@ document.querySelector('#races tbody').innerHTML=RACES.map(r=>`<tr>
  <td>${pip(r.pvp)}<small>${r.pvpn}</small></td><td>${r.cls}</td></tr>`).join('');
 
 /* render overview */
-document.getElementById('overview').innerHTML=CLASSES.map(c=>`<div class="ovcard" style="--c:${c.color}" data-go="${c.id}" role="button" tabindex="0">
- <h3><svg><use href="#${c.icon}"/></svg>${c.name}</h3>
+document.getElementById('overview-grid').innerHTML=CLASSES.map(c=>`<div class="ovcard" style="--c:${c.color}" data-go="${c.id}" role="button" tabindex="0">
+ <h3>${classIcon(c)}${c.name}</h3>
  <div class="m"><span>레벨링</span>${pip(c.ov.lv)}<span>만렙 PvE</span>${pip(c.ov.pve)}<span>PvP</span>${pip(c.ov.pvp)}</div>
  <p>${c.ov.sum}</p></div>`).join('');
-document.getElementById('overview').addEventListener('click',e=>{const k=e.target.closest('.ovcard');if(k)document.querySelector(`.cbtn[aria-controls="p-${k.dataset.go}"]`).click();});
+document.getElementById('overview-grid').addEventListener('click',e=>{const k=e.target.closest('.ovcard');if(k)document.querySelector(`.cbtn[aria-controls="p-${k.dataset.go}"]`).click();});
+document.getElementById('overview-grid').addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('.ovcard')){e.preventDefault();e.target.click();}});
 
 /* render rail + panels */
 const rail=document.getElementById('rail'),panels=document.getElementById('panels');
 CLASSES.forEach((c,i)=>{
-  rail.insertAdjacentHTML('beforeend',`<button class="cbtn" role="tab" aria-selected="${i===0}" aria-controls="p-${c.id}" style="--c:${c.color}"><svg><use href="#${c.icon}"/></svg>${c.name}</button>`);
+  rail.insertAdjacentHTML('beforeend',`<button class="cbtn" role="tab" aria-selected="${i===0}" aria-controls="p-${c.id}" style="--c:${c.color}">${classIcon(c)}${c.name}</button>`);
   panels.insertAdjacentHTML('beforeend',`<section class="cpanel ${i===0?'on':''}" id="p-${c.id}" style="--c:${c.color}" role="tabpanel">
-   <div class="chead"><div class="ico" style="color:${c.color}"><svg><use href="#${c.icon}"/></svg></div><div><h2>${c.name}</h2><div class="tag">${c.tag}</div></div></div>
+   <div class="chead"><div class="ico" style="color:${c.color}">${classIcon(c)}</div><div><h2>${c.name}</h2><div class="tag">${c.tag}</div></div></div>
    <div class="base">${c.base}</div>
    <p class="meta" style="margin:-8px 0 14px">특성 트리 열기: <a href="${treeLinks(c.id).f}" target="_blank" rel="noopener">포에버</a> · <a href="${treeLinks(c.id).c}" target="_blank" rel="noopener">클래식 1.12</a> · <a href="${treeLinks(c.id).d}" target="_blank" rel="noopener">변경점 비교</a> — 두 개를 각각 새 탭으로 열어 나란히 두고 보세요.</p>
    <div class="races">${c.races.map(r=>`<span class="${/인간 사냥꾼|노움 사제|드워프 주술사|오크 마법사|트롤 흑마법사|언데드 성기사/.test(r+' '+c.name)?'new':''}">${r}</span>`).join('')}</div>
@@ -714,7 +772,7 @@ CLASSES.forEach((c,i)=>{
       <details class="more"><summary>특성 개편 요점 ${s.ch.length}개</summary>
         <div class="blk"><ul>${s.ch.map(x=>'<li>'+x+'</li>').join('')}</ul></div>
       </details>
-      <div class="opener"><h4 style="margin:0 0 8px;font-size:12.5px;color:var(--ink3)">예상 오프너 <span class="badge b-pred">예측</span></h4><div class="ostrip">${strip(s.op)}</div><div class="note">${s.opn}</div></div>
+      <div class="opener"><h4 style="margin:0 0 8px;font-size:12.5px;color:var(--ink3)">예상 오프너 <span class="badge b-pred">분석</span></h4><div class="ostrip">${strip(s.op)}</div><div class="note">${s.opn}</div></div>
      </div></article>`).join('')}</div>
   </section>`);
 });
