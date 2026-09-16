@@ -121,6 +121,30 @@ details.more summary::before{content:"▸ "}details.more[open] summary::before{c
 .themebtn{position:fixed;right:14px;bottom:14px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:8px 12px;font:inherit;font-size:12.5px;cursor:pointer}
 @media (prefers-reduced-motion:no-preference){.cpanel.on{animation:fade .25s ease}}
 @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+.bar{display:inline-flex;align-items:center;gap:6px;width:120px;max-width:100%;height:10px;background:var(--line);border-radius:5px;position:relative;vertical-align:middle}
+.bar i{display:block;height:100%;border-radius:5px;background:var(--c,var(--gold))}
+.bar b{position:absolute;right:-18px;top:-5px;font-size:11px;color:var(--ink3);font-weight:700}
+.ovgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.ovcard{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;cursor:pointer;border-top:3px solid var(--c)}
+.ovcard h3{font-size:17px;color:var(--c);display:flex;align-items:center;gap:8px}
+.ovcard h3 svg{width:20px;height:20px}
+.ovcard .m{display:grid;grid-template-columns:52px 1fr;gap:6px 10px;align-items:center;font-size:12px;color:var(--ink2);margin:10px 0 8px}
+.ovcard .m .bar{width:auto;margin-right:20px}
+.ovcard p{margin:0;font-size:12.5px;color:var(--ink3);line-height:1.45}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{font-size:12px;padding:2px 8px;border-radius:999px;border:1px solid var(--line);background:var(--bg2);color:var(--ink)}
+.chip.p{border-color:#4caf7d}.chip.m{border-color:#d76a5a}
+.rate{grid-template-columns:auto 1fr}
+.rate .v{display:flex;align-items:center;gap:22px;font-size:12.5px;color:var(--ink2)}
+.rate .v .bar{flex:0 0 100px}
+.ostrip{display:flex;flex-wrap:wrap;align-items:flex-start;gap:4px}
+.ostrip .st{display:flex;flex-direction:column;align-items:center;width:64px;text-align:center;font-size:10.5px;line-height:1.2;color:var(--ink2)}
+.ostrip .st .ic{width:36px;height:36px;border-radius:7px;border:2px solid var(--c);background:var(--bg2);display:grid;place-items:center;font-weight:900;color:var(--c);font-size:13px;overflow:hidden;margin-bottom:3px}
+.ostrip .st .ic img{width:100%;height:100%;object-fit:cover}
+.ostrip .ar{align-self:center;color:var(--ink3);font-size:14px;margin-top:-14px}
+.roletags{display:flex;gap:5px;flex-wrap:wrap;margin-top:4px}
+.roletags span{font-size:11px;padding:1px 7px;border-radius:4px;background:var(--bg2);border:1px solid var(--line);color:var(--ink2)}
 </style>
 </head>
 <body>
@@ -146,7 +170,7 @@ details.more summary::before{content:"▸ "}details.more[open] summary::before{c
       <span><span class="badge b-mine">캡처</span>블리즈컨 시연 화면·데이터마이닝 (수치 변경 가능)</span>
       <span><span class="badge b-pred">예측</span>커뮤니티 분석·티어 예측 (베타에서 검증 필요)</span>
     </div>
-    <p class="meta">기준일 2026-09-16 (v3: 아이콘·접기 적용) · 베타 9/17 시작 · 출시 11/4 · 첫 레이드 12/9. 별점은 예측이며 5점 만점. 직업 문양은 이 페이지용으로 새로 그린 것입니다.</p>
+    <p class="meta">기준일 2026-09-16 (v4: 시각화) · 베타 9/17 시작 · 출시 11/4 · 첫 레이드 12/9. 별점은 예측이며 5점 만점. 직업 문양은 이 페이지용으로 새로 그린 것입니다.</p>
   </div>
 </header>
 
@@ -154,12 +178,7 @@ details.more summary::before{content:"▸ "}details.more[open] summary::before{c
   <div class="wrap">
     <h2>한눈에 보기</h2>
     <p class="sub">세 갈래로 나눠 봤을 때 각 직업의 위치. 자세한 근거는 아래 직업 탭에서.</p>
-    <div class="tablewrap">
-      <table id="overview">
-        <thead><tr><th>직업</th><th>레벨링 (솔로)</th><th>만렙 PvE (던전·레이드)</th><th>PvP (딜 특성 기준)</th><th>한 줄 요약</th></tr></thead>
-        <tbody></tbody>
-      </table>
-    </div>
+    <div class="ovgrid" id="overview"></div>
   </div>
 </section>
 
@@ -337,7 +356,7 @@ const ICONS={
   '희망 흡수':''
 };
 const F='<span class="badge b-fact">공식</span>',M='<span class="badge b-mine">캡처</span>',P='<span class="badge b-pred">예측</span>';
-const pip=n=>'<span class="pips">'+'<b>'+'◆'.repeat(n)+'</b><i>'+'◆'.repeat(5-n)+'</i></span>';
+const pip=n=>'<span class="bar" aria-label="'+n+'/5"><i style="width:'+(n*20)+'%"></i><b>'+n+'</b></span>';
 const sk=s=>'<span class="sk">'+(ICONS[s]?'<img src="'+ICONS[s]+'" alt="" onerror="this.remove()" style="width:18px;height:18px;vertical-align:-4px;margin-right:5px;border-radius:3px">':'')+s+'</span>';
 
 const CLASSES=[
@@ -655,19 +674,22 @@ document.querySelector('#treetbl tbody').innerHTML=CLASSES.map(c=>{const l=treeL
  <td><a href="${l.c}" target="_blank" rel="noopener">클래식 ${c.name} 트리</a></td>
  <td><a href="${l.d}" target="_blank" rel="noopener">1.12 대비 변경 목록</a></td></tr>`}).join('');
 
+
+const roleTags=r=>{const t=[];if(/근접/.test(r))t.push('⚔ 근접');if(/원거리|저격|캐스터|딜 \(|폭딜|도트/.test(r)&&!/근접/.test(r))t.push('✦ 원거리');if(/탱/.test(r))t.push('🛡 탱');if(/힐/.test(r))t.push('✚ 힐');if(/은신|오프너/.test(r))t.push('◌ 은신');if(/펫/.test(r))t.push('● 펫');if(/PvP/.test(r))t.push('⚑ PvP');return t.map(x=>'<span>'+x+'</span>').join('')};
+const strip=ops=>{const out=[];ops.forEach((o,i)=>{const names=[...o.matchAll(/<span class="sk">(?:<img[^>]*>)?([^<]+)<\/span>/g)].map(m=>m[1]);const plain=o.replace(/<[^>]+>/g,'').replace(/→/g,'').trim();if(!names.length){out.push('<div class="st"><div class="ic">·</div>'+plain+'</div>');}else{names.forEach((n,j)=>{const ico=ICONS[n]?'<img src="'+ICONS[n]+'" alt="" onerror="this.parentNode.textContent=\''+n[0]+'\'">':n[0];out.push('<div class="st"><div class="ic">'+ico+'</div>'+n+'</div>');if(j<names.length-1)out.push('<div class="ar">›</div>');});}
+ if(i<ops.length-1)out.push('<div class="ar">→</div>');});return out.join('')};
+
 /* 종족 표 */
 document.querySelector('#races tbody').innerHTML=RACES.map(r=>`<tr>
  <td class="cls">${r.n}<small>${r.f}</small></td><td>${r.a}</td><td>${r.p}</td>
  <td>${pip(r.pvp)}<small>${r.pvpn}</small></td><td>${r.cls}</td></tr>`).join('');
 
 /* render overview */
-const ovb=document.querySelector('#overview tbody');
-ovb.innerHTML=CLASSES.map(c=>`<tr>
- <td class="cls"><span style="background:${c.color}"></span>${c.name}</td>
- <td>${pip(c.ov.lv)}<small>${c.ov.lvn}</small></td>
- <td>${pip(c.ov.pve)}<small>${c.ov.pven}</small></td>
- <td>${pip(c.ov.pvp)}<small>${c.ov.pvpn}</small></td>
- <td>${c.ov.sum}</td></tr>`).join('');
+document.getElementById('overview').innerHTML=CLASSES.map(c=>`<div class="ovcard" style="--c:${c.color}" data-go="${c.id}" role="button" tabindex="0">
+ <h3><svg><use href="#${c.icon}"/></svg>${c.name}</h3>
+ <div class="m"><span>레벨링</span>${pip(c.ov.lv)}<span>만렙 PvE</span>${pip(c.ov.pve)}<span>PvP</span>${pip(c.ov.pvp)}</div>
+ <p>${c.ov.sum}</p></div>`).join('');
+document.getElementById('overview').addEventListener('click',e=>{const k=e.target.closest('.ovcard');if(k)document.querySelector(`.cbtn[aria-controls="p-${k.dataset.go}"]`).click();});
 
 /* render rail + panels */
 const rail=document.getElementById('rail'),panels=document.getElementById('panels');
@@ -680,20 +702,19 @@ CLASSES.forEach((c,i)=>{
    <div class="races">${c.races.map(r=>`<span class="${/인간 사냥꾼|노움 사제|드워프 주술사|오크 마법사|트롤 흑마법사|언데드 성기사/.test(r+' '+c.name)?'new':''}">${r}</span>`).join('')}</div>
    <details class="more" style="margin-bottom:20px"><summary>종족 추천 순위 보기</summary><div class="tablewrap" style="margin-top:8px"><table style="min-width:560px"><thead><tr><th>종족 추천 순</th><th>PvE</th><th>PvP</th><th>이유</th></tr></thead><tbody>${(RR[c.id]||[]).map(x=>`<tr><td class="cls">${x.r}</td><td>${pip(x.pve)}</td><td>${pip(x.pvp)}</td><td>${x.w}</td></tr>`).join('')}</tbody></table></div></details>
    <div class="specs">${c.specs.map(s=>`<article class="spec">
-     <header><h3>${s.n}</h3><div class="role">${s.role}</div></header>
+     <header><h3>${s.n}</h3><div class="role">${s.role}</div><div class="roletags">${roleTags(s.role)}</div></header>
      <div class="body">
       <div class="rate">
         <span class="k">레벨링</span><span class="v">${pip(s.lv)}${s.lvn}</span>
         <span class="k">만렙 PvE</span><span class="v">${pip(s.pve)}${s.pven}</span>
         <span class="k">PvP</span><span class="v">${pip(s.pvp)}${s.pvpn}</span>
       </div>
-      <div class="pc"><div class="p"><b>장점</b><ul>${s.pros.slice(0,2).map(x=>'<li>'+x+'</li>').join('')}</ul></div><div class="m"><b>단점</b><ul>${s.cons.slice(0,2).map(x=>'<li>'+x+'</li>').join('')}</ul></div></div>
+      <div class="chips">${s.pros.map(x=>'<span class="chip p">+ '+x+'</span>').join('')}${s.cons.map(x=>'<span class="chip m">− '+x+'</span>').join('')}</div>
       <div class="blk racepick"><h4>추천 종족</h4>${s.race}</div>
-      <details class="more"><summary>특성 개편 요점 ${s.ch.length}개 · 장단점 전체</summary>
+      <details class="more"><summary>특성 개편 요점 ${s.ch.length}개</summary>
         <div class="blk"><ul>${s.ch.map(x=>'<li>'+x+'</li>').join('')}</ul></div>
-        ${(s.pros.length>2||s.cons.length>2)?`<div class="pc" style="margin-top:8px"><div class="p"><b>장점 전체</b><ul>${s.pros.map(x=>'<li>'+x+'</li>').join('')}</ul></div><div class="m"><b>단점 전체</b><ul>${s.cons.map(x=>'<li>'+x+'</li>').join('')}</ul></div></div>`:''}
       </details>
-      <div class="opener"><h4 style="margin:0;font-size:12.5px;color:var(--ink3)">예상 오프너 <span class="badge b-pred">예측</span></h4><ol>${s.op.map(x=>'<li>'+x+'</li>').join('')}</ol><div class="note">${s.opn}</div></div>
+      <div class="opener"><h4 style="margin:0 0 8px;font-size:12.5px;color:var(--ink3)">예상 오프너 <span class="badge b-pred">예측</span></h4><div class="ostrip">${strip(s.op)}</div><div class="note">${s.opn}</div></div>
      </div></article>`).join('')}</div>
   </section>`);
 });
