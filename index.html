@@ -199,7 +199,7 @@ details.more summary::before{content:"▸ "}details.more[open] summary::before{c
       <span><span class="badge b-mine">시연빌드</span>블리즈컨 플레이 화면·툴팁 판독 (변경 가능)</span>
       <span><span class="badge b-pred">분석</span>커뮤니티 평가·오프너·별점 (검증 전)</span>
     </div>
-    <p class="meta">교차검증 기준일 2026-09-16 (v5: 타우렌 종특 정정) · 별점은 공식 순위가 아닌 사전 분석이며 5점 만점 · 한국어 기술명은 정식 번역 공개 전 임시 번역이 포함됩니다. 포에버 신규 기술은 정식 아이콘 공개 전까지 비슷한 기존 아이콘을 임시로 사용합니다.</p>
+    <p class="meta">교차검증 기준일 2026-09-16 (v5.1: 타우렌 종특·성스러운 일격 명칭·얼라 캐스터 종족 정정) · 별점은 공식 순위가 아닌 사전 분석이며 5점 만점 · 한국어 기술명은 정식 번역 공개 전 임시 번역이 포함됩니다. 포에버 신규 기술은 정식 아이콘 공개 전까지 비슷한 기존 아이콘을 임시로 사용합니다.</p>
   </div>
 </header>
 
@@ -282,7 +282,7 @@ const ICONS={
   '목조르기':'https://wow.zamimg.com/images/wow/icons/medium/ability_rogue_garrote.jpg',
   '갈기갈기':'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_vampiricaura.jpg',
   '갈퀴 발톱':'https://wow.zamimg.com/images/wow/icons/medium/ability_druid_disembowel.jpg',
-  '강타':'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_holysmite.jpg',
+  '빛의 쇄도':'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_surgeoflight.jpg',
   '고통의 재앙':'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_curseofsargeras.jpg',
   '곰 변신':'https://wow.zamimg.com/images/wow/icons/medium/ability_racial_bearform.jpg',
   '공포':'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_possession.jpg',
@@ -334,7 +334,7 @@ const ICONS={
   '생명력 흡수':'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_lifedrain02.jpg',
   '서리 화살':'https://wow.zamimg.com/images/wow/icons/medium/spell_frost_frostbolt02.jpg',
   '선견자의 격노':'https://wow.zamimg.com/images/wow/icons/medium/spell_shaman_ancestralawakening.jpg',
-  '성스러운 일격':'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_surgeoflight.jpg',
+  '성스러운 일격':'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_holysmite.jpg',
   '소각':'https://wow.zamimg.com/images/wow/icons/medium/spell_fire_burnout.jpg',
   '소용돌이':'https://wow.zamimg.com/images/wow/icons/medium/ability_whirlwind.jpg',
   '순간 치유':'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_flashheal.jpg',
@@ -428,7 +428,7 @@ const CLASSES=[
   lv:2,lvn:'폭딜은 좋지만 자힐·회복 없음, 다운타임 김',pve:3,pven:'분노 대비 지속딜 낮음, 무기 대가로 무기 유연성',pvp:3,pvpn:'스펙 예측 C이나 낙마·필사·제압 발동으로 필드 1:1 여전히 강함',
   pros:['필사의 일격 힐 감소','관통 일격 낙마 확정','제압 발동이 늘어 압박 밀도 상승'],cons:['속박·감속에 취약(혼자면 힘듦)','세계 버프 의존','분노 대비 트리가 덜 채워졌다는 평'],
   race:'<b>인간</b>(기절 해제·검 치명타 2%) 필드 / <b>노움</b>(속박·감속 면역) 전장 / <b>오크</b>(기절 20%↓, 강철 의지와 중첩) 호드',
-  op:[sk('돌진')+' → '+sk('무력화'),sk('필사의 일격'),sk('제압')+' 발동 시 즉시',sk('강타')+' 스윙 사이 삽입',sk('관통 일격')+' 탈것 상대 우선'],opn:'클래식 무기 사이클 + 피의 전율 발동 대응. 강타 스윙 안 끊는다는 점만 새로움.'},
+  op:[sk('돌진')+' → '+sk('무력화'),sk('필사의 일격'),sk('제압')+' 발동 시 즉시',sk('성스러운 일격')+' 스윙 사이 삽입',sk('관통 일격')+' 탈것 상대 우선'],opn:'클래식 무기 사이클 + 피의 전율 발동 대응. 강타 스윙 안 끊는다는 점만 새로움.'},
  {n:'분노',role:'쌍수 근접 딜 / 레이드 물리딜',
   ch:[M+'무한한 격노: 최대 분노 +30',M+'강철 의지(방어→분노): 기절·공포 15% 감소',M+'격노 평준화: 피해 받으면 20% 확률 물리 피해 10% 12초',M+'쌍수 전문화·정밀함 대폭 상향, 광란은 너프',M+'광폭화 격노 강화: 이동 방해 전부 해제',M+'소용돌이 보조무기 타격, 죽음의 소원 피해 5% 증가로 변경'],
   lv:2,lvn:'양손 분노 레벨링 가능하나 회복 없음',pve:5,pven:'상향과 하향이 섞였지만 쌍수 특화 상향으로 종합 상향 예측',pvp:4,pvpn:'A 예측. 이동 방해 자가 해제로 카이팅 상대 개선',
@@ -571,7 +571,7 @@ const CLASSES=[
 {id:'priest',name:'사제',color:'#8fa3bd',icon:'i-priest',tag:'신성/암흑, 노움 신규',
  base:'<b>기본 스킬화</b> 죽음의 선고, 파멸의 역병, 공포의 수호물(전 종족). 종족 사제 기술 유지·개편: 언데드 암흑 희생(대형 흡수), 드워프 징벌(짧은 속박)+필사의 기도, 인간 신성한 은총(약화된 영혼 제거 후 힐), 나엘 별의 파편·요정의 은총. '+M,
  races:['인간','드워프','나이트 엘프','노움','언데드','트롤'],
- ov:{lv:3,lvn:'강타 사제 빌드 생김, 암흑 마나 50%↓',pve:5,pven:'수양 S 예측, 암흑 PvE 최적화',pvp:3,pvpn:'암흑 B 예측, 수양 S(힐)',sum:'수양이 크게 올라왔고 암흑은 도트 크리로 안정. 종족 사제 기술 때문에 종족 선택이 특히 중요.'},
+ ov:{lv:3,lvn:'성스러운 일격(스마이트) 사제 빌드 생김, 암흑 마나 50%↓',pve:5,pven:'수양 S 예측, 암흑 PvE 최적화',pvp:3,pvpn:'암흑 B 예측, 수양 S(힐)',sum:'수양이 크게 올라왔고 암흑은 도트 크리로 안정. 종족 사제 기술 때문에 종족 선택이 특히 중요.'},
  specs:[
  {n:'수양',role:'보호막 힐 + 마력 주입',
   ch:[M+'영혼 수호: 보호막 쿨 4초 감소',M+'새로워진 희망: 약화된 영혼 대상 힐·참회 치명타 2%, 치명타마다 약화된 영혼 1초 감소',M+'참회(신규), 마력 주입 유지'],
@@ -579,12 +579,12 @@ const CLASSES=[
   pros:['보호막 회전','참회','마력 주입'],cons:['고립 시 취약'],
   race:'<b>언데드</b>(암흑 희생·공포 해제) / <b>인간</b>(신성한 은총·기절 해제) / <b>드워프</b>(징벌 속박)',
   op:[sk('보호막')+' 탱',sk('참회'),sk('순간 치유')+' 크리 → 약화된 영혼 단축',sk('마력 주입')+' 폭딜 지원'],opn:'힐 우선순위.'},
- {n:'신성',role:'힐 / 강타 딜',
-  ch:[M+'치유의 기원(신규)',M+'교차 힐 보상 특성',M+'강타 빌드: 권능과 빛 — 신성한 불꽃 대상 강타·참회 피해 10%↑, 성스러운 일격 발동'],
-  lv:3,lvn:'강타 사제로 레벨링 가능',pve:3,pven:'C 예측. 수양·복원 주술사보다 덜 흥미롭다는 평',pvp:2,pvpn:'강타 B 예측',
-  pros:['강타 빌드 성립','치유의 기원'],cons:['수양 대비 툴킷 부족'],
+ {n:'신성',role:'힐 / 성스러운 일격 딜',
+  ch:[M+'치유의 기원(신규)',M+'교차 힐 보상 특성',M+'성스러운 일격 빌드: 권능과 빛 — 신성한 불꽃 대상 성스러운 일격·참회 피해 10%↑, 빛의 쇄도 발동'],
+  lv:3,lvn:'성스러운 일격(스마이트) 사제로 레벨링 가능',pve:3,pven:'C 예측. 수양·복원 주술사보다 덜 흥미롭다는 평',pvp:2,pvpn:'성스러운 일격 빌드 B 예측',
+  pros:['성스러운 일격 빌드 성립','치유의 기원'],cons:['수양 대비 툴킷 부족'],
   race:'<b>인간</b> / <b>드워프</b> / <b>노움</b>(신규, 마나 5%)',
-  op:[sk('신성한 불꽃'),sk('강타')+' x n',sk('참회'),sk('성스러운 일격')+' 발동 시'],opn:'강타 빌드 기준.'},
+  op:[sk('신성한 불꽃'),sk('성스러운 일격')+' x n',sk('참회'),sk('빛의 쇄도')+' 발동 시'],opn:'성스러운 일격 빌드 기준.'},
  {n:'암흑',role:'도트 딜',
   ch:[M+'도트 치명타 적용',M+'암흑 형상: 마나 소모 50% 감소',M+'파멸의 역병·죽음의 선고·공포의 수호물 기본',P+'PvE 딜 최적화 트리'],
   lv:4,lvn:'마나 문제 해결로 레벨링 상향',pve:4,pven:'PvE 딜 최적화',pvp:3,pvpn:'B 예측. 흑마와 역할 겹침',
@@ -709,14 +709,14 @@ const RR={
   {r:'트롤(호)',pve:5,pvp:4,w:'광폭화 시전 속도 10%'},
   {r:'언데드(호)',pve:4,pvp:5,w:'공포 해제로 흑마·사제 상대'},
   {r:'오크(호)',pve:4,pvp:4,w:'신규. 피의 격노 주문력 10%, 저주 해제'},
-  {r:'인간(얼)',pve:4,pvp:4,w:'기절 해제. 검 사용 시 주문 치명타 2%'},
+  {r:'인간(얼)',pve:5,pvp:5,w:'검 착용 시 주문 치명타 2% + 기절 해제. 노움과 양강'},
   {r:'스카이본(얼)',pve:3,pvp:2,w:'가속 1%·활강. 얼라 스카이본 유일 캐스터'}],
  warlock:[
   {r:'트롤(호)',pve:5,pvp:4,w:'신규. 재생 + 생명력 전환 시너지, 광폭화 시전'},
   {r:'오크(호)',pve:5,pvp:5,w:'피의 격노 주문력, 펫 강화, 저주 해제'},
   {r:'언데드(호)',pve:4,pvp:5,w:'무덤의 손길 + 생명력 흡수 = 파밍 무한, 공포 해제'},
-  {r:'노움(얼)',pve:5,pvp:5,w:'마나 5%·속박 면역·유레카. 얼라 흑마 정석'},
-  {r:'인간(얼)',pve:4,pvp:4,w:'기절 해제, 정신력'}]
+  {r:'인간(얼)',pve:5,pvp:5,w:'검 착용 시 주문 치명타 2% + 기절 해제 + 은신 감지. 캐스터 검이 나오면 얼라 흑마 대세'},
+  {r:'노움(얼)',pve:5,pvp:4,w:'마나 5%·속박 면역·유레카. 인간과 양강'}]
 };
 
 
