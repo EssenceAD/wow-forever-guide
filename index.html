@@ -92,8 +92,13 @@ td small{display:block;color:var(--ink3);font-size:12px;line-height:1.4;margin-t
 .blk h4{margin:8px 0 4px;font-size:12.5px;color:var(--ink3);font-weight:700}
 .blk ul{margin:0;padding-left:18px;font-size:13.5px}
 .blk li{margin:3px 0}
-.rate{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:13.5px;align-items:baseline}
-.rate .k{color:var(--ink2);white-space:nowrap}
+.rate{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:14px;align-items:baseline;padding:10px 12px;background:var(--bg2);border-radius:6px}
+.rate .pips{font-size:14px}
+details.more{border-top:1px dashed var(--line);padding-top:8px}
+details.more summary{cursor:pointer;font-size:13px;color:var(--moon);font-weight:700;list-style:none}
+details.more summary::before{content:"▸ "}details.more[open] summary::before{content:"▾ "}
+.opener .sk img{width:18px;height:18px}
+.rate .k{color:var(--ink2);white-space:nowrap;font-weight:700}
 .rate .v{color:var(--ink)}
 .rate .v .pips{margin-right:6px}
 .pc{display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:13px}
@@ -141,7 +146,7 @@ td small{display:block;color:var(--ink3);font-size:12px;line-height:1.4;margin-t
       <span><span class="badge b-mine">캡처</span>블리즈컨 시연 화면·데이터마이닝 (수치 변경 가능)</span>
       <span><span class="badge b-pred">예측</span>커뮤니티 분석·티어 예측 (베타에서 검증 필요)</span>
     </div>
-    <p class="meta">기준일 2026-09-16 (종족 섹션 추가) · 베타 9/17 시작 · 출시 11/4 · 첫 레이드 12/9. 별점은 예측이며 5점 만점. 직업 문양은 이 페이지용으로 새로 그린 것입니다.</p>
+    <p class="meta">기준일 2026-09-16 (v3: 아이콘·접기 적용) · 베타 9/17 시작 · 출시 11/4 · 첫 레이드 12/9. 별점은 예측이며 5점 만점. 직업 문양은 이 페이지용으로 새로 그린 것입니다.</p>
   </div>
 </header>
 
@@ -210,130 +215,130 @@ td small{display:block;color:var(--ink3);font-size:12px;line-height:1.4;margin-t
 /* 스킬 아이콘 훅: 페이지를 직접 호스팅할 때 스킬명 → 이미지 URL을 채우면 배지 앞에 아이콘이 붙습니다.
    빈 문자열('')은 아이콘 없이 이름만 표시됩니다. 자체 호스팅에서만 외부 이미지가 뜹니다. */
 const ICONS={
-  '가로막기':'',
-  '갈기갈기':'',
-  '갈퀴 발톱':'',
-  '강타':'',
-  '고통의 재앙':'',
-  '곰 변신':'',
-  '공포':'',
+  '가로막기':'https://wow.zamimg.com/images/wow/icons/medium/ability_rogue_garrote.jpg',
+  '갈기갈기':'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_vampiricaura.jpg',
+  '갈퀴 발톱':'https://wow.zamimg.com/images/wow/icons/medium/ability_druid_disembowel.jpg',
+  '강타':'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_holysmite.jpg',
+  '고통의 재앙':'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_curseofsargeras.jpg',
+  '곰 변신':'https://wow.zamimg.com/images/wow/icons/medium/ability_racial_bearform.jpg',
+  '공포':'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_possession.jpg',
   '관통 일격':'',
-  '광폭화':'',
-  '광폭화 격노':'',
-  '급류':'',
-  '급소 가격':'',
-  '급속 성장':'',
-  '난도질':'',
-  '날개 절단':'',
-  '냉혈':'',
-  '달빛섬광':'',
-  '대지 결속':'',
-  '대지 충격':'',
-  '덫':'',
-  '돌진':'',
-  '등 뒤 찌르기':'',
-  '마력 주입':'',
-  '망치':'',
+  '광폭화':'https://wow.zamimg.com/images/wow/icons/medium/ability_druid_berserk.jpg',
+  '광폭화 격노':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_ancestralguardian.jpg',
+  '급류':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_riptide.jpg',
+  '급소 가격':'https://wow.zamimg.com/images/wow/icons/medium/ability_cheapshot.jpg',
+  '급속 성장':'https://wow.zamimg.com/images/wow/icons/medium/ability_druid_flourish.jpg',
+  '난도질':'https://wow.zamimg.com/images/wow/icons/medium/ability_rogue_slicedice.jpg',
+  '날개 절단':'https://wow.zamimg.com/images/wow/icons/medium/ability_rogue_trip.jpg',
+  '냉혈':'https://wow.zamimg.com/images/wow/icons/medium/spell_ice_lament.jpg',
+  '달빛섬광':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_starfall.jpg',
+  '대지 결속':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_strengthofearthtotem02.jpg',
+  '대지 충격':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_earthshock.jpg',
+  '덫':'https://wow.zamimg.com/images/wow/icons/medium/spell_frost_chainsofice.jpg',
+  '돌진':'https://wow.zamimg.com/images/wow/icons/medium/ability_warrior_charge.jpg',
+  '등 뒤 찌르기':'https://wow.zamimg.com/images/wow/icons/medium/ability_backstab.jpg',
+  '마력 주입':'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_powerinfusion.jpg',
+  '망치':'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_sealofmight.jpg',
   '매 소환':'',
-  '매복':'',
-  '맹금 일격':'',
+  '매복':'https://wow.zamimg.com/images/wow/icons/medium/ability_rogue_ambush.jpg',
+  '맹금 일격':'https://wow.zamimg.com/images/wow/icons/medium/ability_meleedamage.jpg',
   '맹독':'',
-  '몽구스 물기':'',
-  '무력화':'',
+  '몽구스 물기':'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_swiftstrike.jpg',
+  '무력화':'https://wow.zamimg.com/images/wow/icons/medium/ability_shockwave.jpg',
   '문장 교체':'',
-  '발화':'',
-  '방패 막기':'',
-  '방패 밀쳐내기':'',
-  '번개 화살':'',
-  '변이':'',
-  '별빛 섬광':'',
-  '보호막':'',
-  '복수':'',
-  '부패':'',
+  '발화':'https://wow.zamimg.com/images/wow/icons/medium/spell_fire_sealoffire.jpg',
+  '방패 막기':'https://wow.zamimg.com/images/wow/icons/medium/ability_defend.jpg',
+  '방패 밀쳐내기':'https://wow.zamimg.com/images/wow/icons/medium/inv_shield_05.jpg',
+  '번개 화살':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_lightning.jpg',
+  '변이':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_polymorph.jpg',
+  '별빛 섬광':'https://wow.zamimg.com/images/wow/icons/medium/spell_arcane_starfire.jpg',
+  '보호막':'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_powerwordshield.jpg',
+  '복수':'https://wow.zamimg.com/images/wow/icons/medium/ability_warrior_revenge.jpg',
+  '부패':'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_abominationexplosion.jpg',
   '분노의 문장':'',
-  '불덩이 작렬':'',
-  '불태우기':'',
-  '비전 사격':'',
-  '비전 폭발':'',
-  '비전 화살':'',
-  '빛의 섬광':'',
+  '불덩이 작렬':'https://wow.zamimg.com/images/wow/icons/medium/spell_fire_flamebolt.jpg',
+  '불태우기':'https://wow.zamimg.com/images/wow/icons/medium/spell_fire_soulburn.jpg',
+  '비전 사격':'https://wow.zamimg.com/images/wow/icons/medium/ability_impalingbolt.jpg',
+  '비전 폭발':'https://wow.zamimg.com/images/wow/icons/medium/spell_arcane_blast.jpg',
+  '비전 화살':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_starfall.jpg',
+  '빛의 섬광':'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_flashheal.jpg',
   '빛의 의무':'',
-  '사냥꾼의 징표':'',
-  '사악한 일격':'',
-  '생명력 착취':'',
-  '생명력 흡수':'',
-  '서리 화살':'',
+  '사냥꾼의 징표':'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_snipershot.jpg',
+  '사악한 일격':'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_ritualofsacrifice.jpg',
+  '생명력 착취':'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_requiem.jpg',
+  '생명력 흡수':'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_lifedrain02.jpg',
+  '서리 화살':'https://wow.zamimg.com/images/wow/icons/medium/spell_frost_frostbolt02.jpg',
   '선견자의 격노':'',
-  '성스러운 일격':'',
-  '소각':'',
-  '소용돌이':'',
-  '순간 치유':'',
+  '성스러운 일격':'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_surgeoflight.jpg',
+  '소각':'https://wow.zamimg.com/images/wow/icons/medium/spell_fire_burnout.jpg',
+  '소용돌이':'https://wow.zamimg.com/images/wow/icons/medium/ability_whirlwind.jpg',
+  '순간 치유':'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_flashheal.jpg',
   '스트라이더 킥':'',
   '신성 일격':'',
-  '신성 충격':'',
-  '신성한 방패':'',
-  '신성한 불꽃':'',
-  '신성화':'',
-  '신속한 치유':'',
-  '심판':'',
-  '아드레날린 촉진':'',
-  '악마 희생':'',
-  '암흑 화살':'',
-  '야수의 격노':'',
-  '어둠의 권능: 고통':'',
-  '어둠의 불길':'',
-  '얼음 방패':'',
-  '얼음 창':'',
-  '얼음 회오리':'',
-  '얽힌 뿌리':'',
+  '신성 충격':'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_searinglight.jpg',
+  '신성한 방패':'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_blessingofprotection.jpg',
+  '신성한 불꽃':'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_searinglight.jpg',
+  '신성화':'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_innerfire.jpg',
+  '신속한 치유':'https://wow.zamimg.com/images/wow/icons/medium/inv_relics_idolofrejuvenation.jpg',
+  '심판':'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_righteousfury.jpg',
+  '아드레날린 촉진':'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_shadowworddominate.jpg',
+  '악마 희생':'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_psychicscream.jpg',
+  '암흑 화살':'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_shadowbolt.jpg',
+  '야수의 격노':'https://wow.zamimg.com/images/wow/icons/medium/ability_druid_ferociousbite.jpg',
+  '어둠의 권능: 고통':'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_shadowwordpain.jpg',
+  '어둠의 불길':'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_scourgebuild.jpg',
+  '얼음 방패':'https://wow.zamimg.com/images/wow/icons/medium/spell_frost_frost.jpg',
+  '얼음 창':'https://wow.zamimg.com/images/wow/icons/medium/spell_frost_frostblast.jpg',
+  '얼음 회오리':'https://wow.zamimg.com/images/wow/icons/medium/spell_frost_frostnova.jpg',
+  '얽힌 뿌리':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_stranglevines.jpg',
   '엘룬의 빛':'',
-  '여행 형상':'',
-  '연쇄 번개':'',
-  '연쇄 치유':'',
-  '영웅의 일격':'',
-  '영혼 흡수':'',
-  '예지력':'',
-  '용암 폭발':'',
-  '용의 숨결':'',
-  '유령 늑대':'',
-  '일제 사격':'',
-  '자연의 신속함':'',
+  '여행 형상':'https://wow.zamimg.com/images/wow/icons/medium/ability_druid_travelform.jpg',
+  '연쇄 번개':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_chainlightning.jpg',
+  '연쇄 치유':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_healingwavegreater.jpg',
+  '영웅의 일격':'https://wow.zamimg.com/images/wow/icons/medium/ability_rogue_ambush.jpg',
+  '영혼 흡수':'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_haunting.jpg',
+  '예지력':'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_possession.jpg',
+  '용암 폭발':'https://wow.zamimg.com/images/wow/icons/medium/spell_shaman_lavaburst.jpg',
+  '용의 숨결':'https://wow.zamimg.com/images/wow/icons/medium/inv_misc_head_dragon_01.jpg',
+  '유령 늑대':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_spiritwolf.jpg',
+  '일제 사격':'https://wow.zamimg.com/images/wow/icons/medium/ability_marksmanship.jpg',
+  '자연의 신속함':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_ravenform.jpg',
   '저격 사격':'',
-  '절개':'',
-  '절단':'',
-  '점멸':'',
-  '점화':'',
-  '정신 분열':'',
-  '정신의 채찍':'',
-  '제물':'',
-  '제압':'',
-  '조준 사격':'',
-  '죽음의 선고':'',
-  '죽음의 소원':'',
-  '참회':'',
-  '천둥벼락':'',
-  '천벌':'',
-  '축복의 보호막':'',
-  '출혈':'',
-  '치유의 물결':'',
-  '치유의 손길':'',
-  '파멸의 역병':'',
-  '파열':'',
-  '폭풍의 일격':'',
-  '표범 은신':'',
-  '피의 갈증':'',
-  '필사의 일격':'',
-  '할퀴기':'',
-  '해충 떼':'',
-  '화염 작열':'',
-  '화염 충격':'',
-  '회복':'',
-  '흉포한 이빨':'',
+  '절개':'https://wow.zamimg.com/images/wow/icons/medium/ability_rogue_eviscerate.jpg',
+  '절단':'https://wow.zamimg.com/images/wow/icons/medium/ability_rogue_shadowstrikes.jpg',
+  '점멸':'https://wow.zamimg.com/images/wow/icons/medium/spell_arcane_blink.jpg',
+  '점화':'https://wow.zamimg.com/images/wow/icons/medium/spell_fire_fireball.jpg',
+  '정신 분열':'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_unsummonbuilding.jpg',
+  '정신의 채찍':'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_siphonmana.jpg',
+  '제물':'https://wow.zamimg.com/images/wow/icons/medium/spell_fire_immolation.jpg',
+  '제압':'https://wow.zamimg.com/images/wow/icons/medium/ability_meleedamage.jpg',
+  '조준 사격':'https://wow.zamimg.com/images/wow/icons/medium/inv_spear_07.jpg',
+  '죽음의 선고':'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_demonicfortitude.jpg',
+  '죽음의 소원':'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_deathpact.jpg',
+  '참회':'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_penance.jpg',
+  '천둥벼락':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_thunderclap.jpg',
+  '천벌':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_abolishmagic.jpg',
+  '축복의 보호막':'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_sealofprotection.jpg',
+  '출혈':'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_lifedrain.jpg',
+  '치유의 물결':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_magicimmunity.jpg',
+  '치유의 손길':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_healingtouch.jpg',
+  '파멸의 역병':'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_blackplague.jpg',
+  '파열':'https://wow.zamimg.com/images/wow/icons/medium/ability_rogue_rupture.jpg',
+  '폭풍의 일격':'https://wow.zamimg.com/images/wow/icons/medium/ability_shaman_stormstrike.jpg',
+  '표범 은신':'https://wow.zamimg.com/images/wow/icons/medium/ability_ambush.jpg',
+  '피의 갈증':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_bloodlust.jpg',
+  '필사의 일격':'https://wow.zamimg.com/images/wow/icons/medium/ability_warrior_savageblow.jpg',
+  '할퀴기':'https://wow.zamimg.com/images/wow/icons/medium/ability_druid_bash.jpg',
+  '해충 떼':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_insectswarm.jpg',
+  '화염 작열':'https://wow.zamimg.com/images/wow/icons/medium/spell_fire_fireball02.jpg',
+  '화염 충격':'https://wow.zamimg.com/images/wow/icons/medium/spell_fire_flameshock.jpg',
+  '회복':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_rejuvenation.jpg',
+  '흉포한 이빨':'https://wow.zamimg.com/images/wow/icons/medium/ability_druid_ferociousbite.jpg',
   '희망 흡수':''
 };
 const F='<span class="badge b-fact">공식</span>',M='<span class="badge b-mine">캡처</span>',P='<span class="badge b-pred">예측</span>';
 const pip=n=>'<span class="pips">'+'<b>'+'◆'.repeat(n)+'</b><i>'+'◆'.repeat(5-n)+'</i></span>';
-const sk=s=>'<span class="sk">'+(ICONS[s]?'<img src="'+ICONS[s]+'" alt="" style="width:16px;height:16px;vertical-align:-3px;margin-right:4px;border-radius:3px">':'')+s+'</span>';
+const sk=s=>'<span class="sk">'+(ICONS[s]?'<img src="'+ICONS[s]+'" alt="" onerror="this.remove()" style="width:18px;height:18px;vertical-align:-4px;margin-right:5px;border-radius:3px">':'')+s+'</span>';
 
 const CLASSES=[
 {id:'warrior',name:'전사',color:'#C79C6E',icon:'i-warrior',tag:'근접 물리, 방어구 판금',
@@ -673,18 +678,21 @@ CLASSES.forEach((c,i)=>{
    <div class="base">${c.base}</div>
    <p class="meta" style="margin:-8px 0 14px">특성 트리 열기: <a href="${treeLinks(c.id).f}" target="_blank" rel="noopener">포에버</a> · <a href="${treeLinks(c.id).c}" target="_blank" rel="noopener">클래식 1.12</a> · <a href="${treeLinks(c.id).d}" target="_blank" rel="noopener">변경점 비교</a> — 두 개를 각각 새 탭으로 열어 나란히 두고 보세요.</p>
    <div class="races">${c.races.map(r=>`<span class="${/인간 사냥꾼|노움 사제|드워프 주술사|오크 마법사|트롤 흑마법사|언데드 성기사/.test(r+' '+c.name)?'new':''}">${r}</span>`).join('')}</div>
-   <div class="tablewrap" style="margin-bottom:20px"><table style="min-width:560px"><thead><tr><th>종족 추천 순</th><th>PvE</th><th>PvP</th><th>이유</th></tr></thead><tbody>${(RR[c.id]||[]).map(x=>`<tr><td class="cls">${x.r}</td><td>${pip(x.pve)}</td><td>${pip(x.pvp)}</td><td>${x.w}</td></tr>`).join('')}</tbody></table></div>
+   <details class="more" style="margin-bottom:20px"><summary>종족 추천 순위 보기</summary><div class="tablewrap" style="margin-top:8px"><table style="min-width:560px"><thead><tr><th>종족 추천 순</th><th>PvE</th><th>PvP</th><th>이유</th></tr></thead><tbody>${(RR[c.id]||[]).map(x=>`<tr><td class="cls">${x.r}</td><td>${pip(x.pve)}</td><td>${pip(x.pvp)}</td><td>${x.w}</td></tr>`).join('')}</tbody></table></div></details>
    <div class="specs">${c.specs.map(s=>`<article class="spec">
      <header><h3>${s.n}</h3><div class="role">${s.role}</div></header>
      <div class="body">
-      <div class="blk"><h4>특성 개편 요점</h4><ul>${s.ch.map(x=>'<li>'+x+'</li>').join('')}</ul></div>
       <div class="rate">
         <span class="k">레벨링</span><span class="v">${pip(s.lv)}${s.lvn}</span>
         <span class="k">만렙 PvE</span><span class="v">${pip(s.pve)}${s.pven}</span>
         <span class="k">PvP</span><span class="v">${pip(s.pvp)}${s.pvpn}</span>
       </div>
-      <div class="pc"><div class="p"><b>장점</b><ul>${s.pros.map(x=>'<li>'+x+'</li>').join('')}</ul></div><div class="m"><b>단점</b><ul>${s.cons.map(x=>'<li>'+x+'</li>').join('')}</ul></div></div>
+      <div class="pc"><div class="p"><b>장점</b><ul>${s.pros.slice(0,2).map(x=>'<li>'+x+'</li>').join('')}</ul></div><div class="m"><b>단점</b><ul>${s.cons.slice(0,2).map(x=>'<li>'+x+'</li>').join('')}</ul></div></div>
       <div class="blk racepick"><h4>추천 종족</h4>${s.race}</div>
+      <details class="more"><summary>특성 개편 요점 ${s.ch.length}개 · 장단점 전체</summary>
+        <div class="blk"><ul>${s.ch.map(x=>'<li>'+x+'</li>').join('')}</ul></div>
+        ${(s.pros.length>2||s.cons.length>2)?`<div class="pc" style="margin-top:8px"><div class="p"><b>장점 전체</b><ul>${s.pros.map(x=>'<li>'+x+'</li>').join('')}</ul></div><div class="m"><b>단점 전체</b><ul>${s.cons.map(x=>'<li>'+x+'</li>').join('')}</ul></div></div>`:''}
+      </details>
       <div class="opener"><h4 style="margin:0;font-size:12.5px;color:var(--ink3)">예상 오프너 <span class="badge b-pred">예측</span></h4><ol>${s.op.map(x=>'<li>'+x+'</li>').join('')}</ol><div class="note">${s.opn}</div></div>
      </div></article>`).join('')}</div>
   </section>`);
