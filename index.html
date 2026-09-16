@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>와우 포에버 직업 선택 가이드 — 특성 · 레벨링 · 만렙 · PvP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@600;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f1720; --bg2:#152030; --panel:#1a2736; --line:#2a3a4d;
+  --ink:#e8edf3; --ink2:#a9b6c6; --ink3:#748399;
+  --moon:#c9d6ea; --gold:#e0b45c;
+  --fact:#5aa9e6; --mine:#e0b45c; --pred:#8a97a8;
+  --r:8px;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#f3f0e8; --bg2:#ebe6da; --panel:#fbf9f4; --line:#d8d1c1;
+    --ink:#1b2430; --ink2:#4a5566; --ink3:#77839a;
+    --moon:#2d4b7a; --gold:#9a6b12;
+    --fact:#1f6fb2; --mine:#9a6b12; --pred:#6a7484;
+  }
+}
+:root[data-theme="light"]{
+  --bg:#f3f0e8; --bg2:#ebe6da; --panel:#fbf9f4; --line:#d8d1c1;
+  --ink:#1b2430; --ink2:#4a5566; --ink3:#77839a;
+  --moon:#2d4b7a; --gold:#9a6b12;
+  --fact:#1f6fb2; --mine:#9a6b12; --pred:#6a7484;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans KR",system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;line-height:1.6;font-size:15px}
+a{color:var(--moon)}
+h1,h2,h3{font-family:"Noto Serif KR","Noto Sans KR",serif;margin:0;line-height:1.25}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+
+/* hero */
+.hero{padding:44px 0 26px;border-bottom:1px solid var(--line)}
+.hero h1{font-size:clamp(26px,4vw,40px);font-weight:900;letter-spacing:-.01em}
+.hero p{margin:12px 0 0;color:var(--ink2);max-width:66ch}
+.legend{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:16px;font-size:13px;color:var(--ink2)}
+.badge{display:inline-block;padding:1px 7px;border-radius:4px;font-size:11.5px;font-weight:700;vertical-align:middle;letter-spacing:.02em;margin-right:4px}
+.b-fact{background:var(--fact);color:#fff}
+.b-mine{background:var(--mine);color:#1b1b1b}
+.b-pred{background:var(--pred);color:#fff}
+.meta{font-size:12.5px;color:var(--ink3);margin-top:10px}
+
+/* overview table */
+.section{padding:30px 0}
+.section h2{font-size:22px;font-weight:900;margin-bottom:6px}
+.section .sub{color:var(--ink2);margin:0 0 16px;font-size:14px}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--panel)}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:13.5px}
+th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:var(--ink2);font-weight:700;font-size:12.5px;background:var(--bg2);position:sticky;top:0}
+tr:last-child td{border-bottom:0}
+td.cls{font-weight:700;white-space:nowrap}
+td.cls span{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:8px;vertical-align:-1px}
+.pips{white-space:nowrap;letter-spacing:1px;font-size:12px}
+.pips b{color:var(--gold)} .pips i{color:var(--line);font-style:normal}
+td small{display:block;color:var(--ink3);font-size:12px;line-height:1.4;margin-top:2px}
+
+/* class rail */
+.rail{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 0}
+.rail .row{display:flex;gap:8px;overflow-x:auto;scrollbar-width:thin;padding-bottom:2px}
+.cbtn{flex:0 0 auto;display:flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:var(--panel);color:var(--ink);cursor:pointer;font:inherit;font-size:14px;font-weight:700}
+.cbtn svg{width:18px;height:18px}
+.cbtn[aria-selected="true"]{border-color:var(--c);box-shadow:inset 0 0 0 1px var(--c);color:var(--c)}
+.cbtn:focus-visible{outline:2px solid var(--moon);outline-offset:2px}
+
+/* class panel */
+.cpanel{display:none;padding:28px 0 40px}
+.cpanel.on{display:block}
+.chead{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:8px}
+.chead .ico{width:56px;height:56px;border-radius:14px;display:grid;place-items:center;background:var(--bg2);border:2px solid var(--c)}
+.chead .ico svg{width:32px;height:32px}
+.chead h2{font-size:30px;font-weight:900;color:var(--c)}
+.chead .tag{color:var(--ink2);font-size:14px}
+.base{margin:10px 0 18px;padding:12px 14px;background:var(--bg2);border-left:3px solid var(--c);border-radius:0 var(--r) var(--r) 0;font-size:14px}
+.base b{color:var(--ink)}
+.races{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 20px;font-size:13px}
+.races span{padding:3px 9px;border:1px solid var(--line);border-radius:6px;color:var(--ink2)}
+.races span.new{border-color:var(--gold);color:var(--gold)}
+
+.specs{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:900px){.specs{grid-template-columns:1fr}}
+.spec{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);display:flex;flex-direction:column}
+.spec header{padding:14px 16px 10px;border-bottom:1px solid var(--line)}
+.spec header h3{font-size:19px;font-weight:900}
+.spec header .role{font-size:12.5px;color:var(--ink3);margin-top:2px}
+.spec .body{padding:6px 16px 14px;display:flex;flex-direction:column;gap:12px}
+.blk h4{margin:8px 0 4px;font-size:12.5px;color:var(--ink3);font-weight:700}
+.blk ul{margin:0;padding-left:18px;font-size:13.5px}
+.blk li{margin:3px 0}
+.rate{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:13.5px;align-items:baseline}
+.rate .k{color:var(--ink2);white-space:nowrap}
+.rate .v{color:var(--ink)}
+.rate .v .pips{margin-right:6px}
+.pc{display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:13px}
+@media(max-width:520px){.pc{grid-template-columns:1fr}}
+.pc div{padding:8px 10px;border-radius:6px;background:var(--bg2)}
+.pc .p{border-left:3px solid #4caf7d}.pc .m{border-left:3px solid #d76a5a}
+.pc b{display:block;font-size:12px;margin-bottom:2px;color:var(--ink2)}
+.pc ul{margin:0;padding-left:16px}
+.opener{background:var(--bg2);border-radius:6px;padding:10px 12px}
+.opener ol{margin:4px 0 0;padding-left:20px;font-size:13.5px}
+.opener li{margin:2px 0}
+.opener .sk{display:inline-block;padding:0 6px;border:1px solid var(--line);border-radius:4px;background:var(--panel);font-weight:700;font-size:12.5px;color:var(--c)}
+.opener .note{font-size:12px;color:var(--ink3);margin-top:6px}
+.racepick{font-size:13.5px}
+.racepick b{color:var(--gold)}
+
+.foot{padding:30px 0 50px;border-top:1px solid var(--line);color:var(--ink2);font-size:13.5px}
+.foot ul{padding-left:18px;margin:8px 0}
+.foot li{margin:3px 0}
+.themebtn{position:fixed;right:14px;bottom:14px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:8px 12px;font:inherit;font-size:12.5px;cursor:pointer}
+@media (prefers-reduced-motion:no-preference){.cpanel.on{animation:fade .25s ease}}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-warrior" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 20l6-6M14 4l6 6-9 9-6-6zM13 11l3-3M3 21l2-2"/></symbol>
+  <symbol id="i-paladin" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 3v18M6 9h12M9 6h6M9 21h6"/><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".5"/></symbol>
+  <symbol id="i-shaman" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M13 2L6 13h5l-1 9 8-12h-5z"/></symbol>
+  <symbol id="i-hunter" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M5 3c8 2 12 8 14 18M5 3l14 18M12 12l5-5M17 7h-4M17 7v4"/></symbol>
+  <symbol id="i-rogue" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M4 4l8 8M20 4l-8 8M12 12l-4 8M12 12l4 8M6 11l-2 2M18 11l2 2"/></symbol>
+  <symbol id="i-druid" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M20 4c-9 0-14 5-14 12 0 2 1 4 3 4 7 0 11-6 11-16zM6 20c2-6 6-9 10-11"/></symbol>
+  <symbol id="i-priest" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M19 5l-3 3M8 16l-3 3"/></symbol>
+  <symbol id="i-mage" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 3l2.5 5.5L20 10l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-1.5z"/></symbol>
+  <symbol id="i-warlock" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M12 3c-4 4-7 7-7 11a7 7 0 0014 0c0-4-3-7-7-11zM12 10c-1.5 2-3 3-3 5a3 3 0 006 0c0-2-1.5-3-3-5z"/></symbol>
+</svg>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>와우 포에버 직업 선택 가이드</h1>
+    <p>특성 개편 요점, 레벨링, 만렙 이후, PvP까지 한 장에. 블리즈컨 2026 공식 발표와 현장 시연 캡처를 근거로 정리했고, 아직 확정되지 않은 부분은 예측이라고 표시했습니다.</p>
+    <div class="legend">
+      <span><span class="badge b-fact">공식</span>블리자드 패널·보도자료·개발진 인터뷰</span>
+      <span><span class="badge b-mine">캡처</span>블리즈컨 시연 화면·데이터마이닝 (수치 변경 가능)</span>
+      <span><span class="badge b-pred">예측</span>커뮤니티 분석·티어 예측 (베타에서 검증 필요)</span>
+    </div>
+    <p class="meta">기준일 2026-09-16 (종족 섹션 추가) · 베타 9/17 시작 · 출시 11/4 · 첫 레이드 12/9. 별점은 예측이며 5점 만점. 직업 문양은 이 페이지용으로 새로 그린 것입니다.</p>
+  </div>
+</header>
+
+<section class="section">
+  <div class="wrap">
+    <h2>한눈에 보기</h2>
+    <p class="sub">세 갈래로 나눠 봤을 때 각 직업의 위치. 자세한 근거는 아래 직업 탭에서.</p>
+    <div class="tablewrap">
+      <table id="overview">
+        <thead><tr><th>직업</th><th>레벨링 (솔로)</th><th>만렙 PvE (던전·레이드)</th><th>PvP (딜 특성 기준)</th><th>한 줄 요약</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <h2>종족 특성 한눈에</h2>
+    <p class="sub">모든 종족이 액티브 2개 + 패시브 2개 구조로 재설계됐습니다. 수치는 블리즈컨 시연 기준이라 바뀔 수 있어요. <span class="badge b-mine">캡처</span></p>
+    <div class="tablewrap">
+      <table id="races">
+        <thead><tr><th>종족</th><th>액티브</th><th>패시브</th><th>PvP 가치</th><th>잘 맞는 직업</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="trees">
+  <div class="wrap">
+    <h2>특성 트리 직접 비교</h2>
+    <p class="sub">포에버 트리와 클래식 1.12 트리를 각각 새 탭으로 열어 나란히 놓고 보세요. 와우헤드는 한국어 페이지가 있고, 나머지 두 곳은 영문이지만 클래식 대비 변경점을 한 화면에 표시합니다.</p>
+    <div class="tablewrap">
+      <table id="treetbl" style="min-width:700px">
+        <thead><tr><th>직업</th><th>포에버 트리 (와우헤드 한국어)</th><th>클래식 1.12 트리 (와우헤드 한국어)</th><th>변경점 비교 (영문)</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <p class="meta">그 밖의 계산기: <a href="https://wowforevertalents.com/" target="_blank" rel="noopener">wowforevertalents.com</a> (시연 확인 특성과 클래식 임시값을 구분 표시), <a href="https://wowtbc.gg/warcraftforever/talent-calculator/" target="_blank" rel="noopener">wowtbc.gg</a>. 와우헤드 한국어 주소가 아직 안 열리면 같은 주소에서 /ko/를 빼면 영문판입니다.</p>
+  </div>
+</section>
+
+<nav class="rail" aria-label="직업 선택">
+  <div class="wrap"><div class="row" role="tablist" id="rail"></div></div>
+</nav>
+
+<main class="wrap" id="panels"></main>
+
+<footer class="foot">
+  <div class="wrap">
+    <b>근거 자료</b>
+    <ul>
+      <li>블리자드 공식: <a href="https://news.blizzard.com/en-us/article/24303313/world-of-warcraft-forever-deep-dive-panel-recap" target="_blank" rel="noopener">Deep Dive 패널 리캡</a>, <a href="https://worldofwarcraft.blizzard.com/en-us/news/24302093" target="_blank" rel="noopener">What's Next 발표문</a></li>
+      <li>종족 특성·조합: <a href="https://www.wowhead.com/forever/guide/new-race-class-combinations" target="_blank" rel="noopener">Wowhead</a>, <a href="https://mobalytics.gg/gamebase/guides/wow-forever-racial-abilities" target="_blank" rel="noopener">Mobalytics 종특 정리</a></li>
+      <li>특성 캡처: <a href="https://classicwowforever.com/class-changes/" target="_blank" rel="noopener">classicwowforever.com 1.12 대비 변경 비교</a>, r/classicwow 직업 변경 요약글</li>
+      <li>진행 모델: <a href="https://guided.news/en/news/wow-forever-stays-at-level-60-heres-how-progression-works-afterward/" target="_blank" rel="noopener">Guided.news — 60 고정 이후 진행 방식</a></li>
+      <li>PvP 예측: <a href="https://boostroom.com/blog/wow-forever-pvp-guide-honor-world-pvp-battlegrounds-and-best-classes" target="_blank" rel="noopener">BoostRoom PvP 가이드</a>, <a href="https://www.aoeah.com/news/4820--wow-forever-pvp-tier-list--best-pvp-class-ranking-in-classic" target="_blank" rel="noopener">aoeah 스펙별 PvP 티어 예측</a></li>
+    </ul>
+    <p>공통 변경(전 직업): 특성 트리 11·16·21·31 마일스톤 구조, 핵심 버프 특성(신령·왕의 축복·야생의 징표 강화 등) 기본 스킬화, 주문·근접·원거리 적중 통합, 치명타 통합, 종족 특성 액티브 2 + 패시브 2. 오프너는 클래식 기본 사이클에 새 기술을 얹은 예상안이며 베타에서 확인 후 갱신 예정.</p>
+  </div>
+</footer>
+<button class="themebtn" id="theme">테마 전환</button>
+
+<script>
+/* 스킬 아이콘 훅: 페이지를 직접 호스팅할 때 스킬명 → 이미지 URL을 채우면 배지 앞에 아이콘이 붙습니다.
+   빈 문자열('')은 아이콘 없이 이름만 표시됩니다. 자체 호스팅에서만 외부 이미지가 뜹니다. */
+const ICONS={
+  '가로막기':'',
+  '갈기갈기':'',
+  '갈퀴 발톱':'',
+  '강타':'',
+  '고통의 재앙':'',
+  '곰 변신':'',
+  '공포':'',
+  '관통 일격':'',
+  '광폭화':'',
+  '광폭화 격노':'',
+  '급류':'',
+  '급소 가격':'',
+  '급속 성장':'',
+  '난도질':'',
+  '날개 절단':'',
+  '냉혈':'',
+  '달빛섬광':'',
+  '대지 결속':'',
+  '대지 충격':'',
+  '덫':'',
+  '돌진':'',
+  '등 뒤 찌르기':'',
+  '마력 주입':'',
+  '망치':'',
+  '매 소환':'',
+  '매복':'',
+  '맹금 일격':'',
+  '맹독':'',
+  '몽구스 물기':'',
+  '무력화':'',
+  '문장 교체':'',
+  '발화':'',
+  '방패 막기':'',
+  '방패 밀쳐내기':'',
+  '번개 화살':'',
+  '변이':'',
+  '별빛 섬광':'',
+  '보호막':'',
+  '복수':'',
+  '부패':'',
+  '분노의 문장':'',
+  '불덩이 작렬':'',
+  '불태우기':'',
+  '비전 사격':'',
+  '비전 폭발':'',
+  '비전 화살':'',
+  '빛의 섬광':'',
+  '빛의 의무':'',
+  '사냥꾼의 징표':'',
+  '사악한 일격':'',
+  '생명력 착취':'',
+  '생명력 흡수':'',
+  '서리 화살':'',
+  '선견자의 격노':'',
+  '성스러운 일격':'',
+  '소각':'',
+  '소용돌이':'',
+  '순간 치유':'',
+  '스트라이더 킥':'',
+  '신성 일격':'',
+  '신성 충격':'',
+  '신성한 방패':'',
+  '신성한 불꽃':'',
+  '신성화':'',
+  '신속한 치유':'',
+  '심판':'',
+  '아드레날린 촉진':'',
+  '악마 희생':'',
+  '암흑 화살':'',
+  '야수의 격노':'',
+  '어둠의 권능: 고통':'',
+  '어둠의 불길':'',
+  '얼음 방패':'',
+  '얼음 창':'',
+  '얼음 회오리':'',
+  '얽힌 뿌리':'',
+  '엘룬의 빛':'',
+  '여행 형상':'',
+  '연쇄 번개':'',
+  '연쇄 치유':'',
+  '영웅의 일격':'',
+  '영혼 흡수':'',
+  '예지력':'',
+  '용암 폭발':'',
+  '용의 숨결':'',
+  '유령 늑대':'',
+  '일제 사격':'',
+  '자연의 신속함':'',
+  '저격 사격':'',
+  '절개':'',
+  '절단':'',
+  '점멸':'',
+  '점화':'',
+  '정신 분열':'',
+  '정신의 채찍':'',
+  '제물':'',
+  '제압':'',
+  '조준 사격':'',
+  '죽음의 선고':'',
+  '죽음의 소원':'',
+  '참회':'',
+  '천둥벼락':'',
+  '천벌':'',
+  '축복의 보호막':'',
+  '출혈':'',
+  '치유의 물결':'',
+  '치유의 손길':'',
+  '파멸의 역병':'',
+  '파열':'',
+  '폭풍의 일격':'',
+  '표범 은신':'',
+  '피의 갈증':'',
+  '필사의 일격':'',
+  '할퀴기':'',
+  '해충 떼':'',
+  '화염 작열':'',
+  '화염 충격':'',
+  '회복':'',
+  '흉포한 이빨':'',
+  '희망 흡수':''
+};
+const F='<span class="badge b-fact">공식</span>',M='<span class="badge b-mine">캡처</span>',P='<span class="badge b-pred">예측</span>';
+const pip=n=>'<span class="pips">'+'<b>'+'◆'.repeat(n)+'</b><i>'+'◆'.repeat(5-n)+'</i></span>';
+const sk=s=>'<span class="sk">'+(ICONS[s]?'<img src="'+ICONS[s]+'" alt="" style="width:16px;height:16px;vertical-align:-3px;margin-right:4px;border-radius:3px">':'')+s+'</span>';
+
+const CLASSES=[
+{id:'warrior',name:'전사',color:'#C79C6E',icon:'i-warrior',tag:'근접 물리, 방어구 판금',
+ base:'<b>기본 스킬화</b> 승리의 질주, 전술 숙련. <b>공통</b> 관통 일격(신규): 거인·용족·탑승 대상 추가 피해 + 낙마 확정. 무기 전문화가 "무기 대가"로 통합돼 특성 초기화 없이 무기 교체. '+M,
+ races:['인간','드워프','나이트 엘프','노움','스카이본','오크','언데드','타우렌','트롤'],
+ ov:{lv:2,lvn:'솔로 레벨링 부담 큼(BoostRoom 예측)',pve:5,pven:'탱·물리딜 모두 최상위 수요',pvp:3,pvpn:'분노 A / 무기 C 예측, 지원 있을 때 최강',sum:'혼자 힘들고 파티에서 강한 클래식 공식 그대로. 낙마 확정 기술이 필드 PvP에서 큰 의미.'},
+ specs:[
+ {n:'무기',role:'양손 근접 딜 / PvP 전통 스펙',
+  ch:[M+'제압 강화 2행, 천둥벼락 강화는 방어로 이동',M+'피의 전율(신규): 근접 공격이 제압 발동 확률',M+'강타 강화: 글쿨·시전 0.5초 감소, 스윙 타이머 안 끊음, 26pt 행',M+'무력화 강화 속박 15% 유지, 필사의 일격 동일'],
+  lv:2,lvn:'폭딜은 좋지만 자힐·회복 없음, 다운타임 김',pve:3,pven:'분노 대비 지속딜 낮음, 무기 대가로 무기 유연성',pvp:3,pvpn:'스펙 예측 C이나 낙마·필사·제압 발동으로 필드 1:1 여전히 강함',
+  pros:['필사의 일격 힐 감소','관통 일격 낙마 확정','제압 발동이 늘어 압박 밀도 상승'],cons:['속박·감속에 취약(혼자면 힘듦)','세계 버프 의존','분노 대비 트리가 덜 채워졌다는 평'],
+  race:'<b>인간</b>(기절 해제·검 치명타 2%) 필드 / <b>노움</b>(속박·감속 면역) 전장 / <b>오크</b>(기절 20%↓, 강철 의지와 중첩) 호드',
+  op:[sk('돌진')+' → '+sk('무력화'),sk('필사의 일격'),sk('제압')+' 발동 시 즉시',sk('강타')+' 스윙 사이 삽입',sk('관통 일격')+' 탈것 상대 우선'],opn:'클래식 무기 사이클 + 피의 전율 발동 대응. 강타 스윙 안 끊는다는 점만 새로움.'},
+ {n:'분노',role:'쌍수 근접 딜 / 레이드 물리딜',
+  ch:[M+'무한한 격노: 최대 분노 +30',M+'강철 의지(방어→분노): 기절·공포 15% 감소',M+'격노 평준화: 피해 받으면 20% 확률 물리 피해 10% 12초',M+'쌍수 전문화·정밀함 대폭 상향, 광란은 너프',M+'광폭화 격노 강화: 이동 방해 전부 해제',M+'소용돌이 보조무기 타격, 죽음의 소원 피해 5% 증가로 변경'],
+  lv:2,lvn:'양손 분노 레벨링 가능하나 회복 없음',pve:5,pven:'상향과 하향이 섞였지만 쌍수 특화 상향으로 종합 상향 예측',pvp:4,pvpn:'A 예측. 이동 방해 자가 해제로 카이팅 상대 개선',
+  pros:['이동 방해 자가 해제','분노 풀이 넓어져 폭발 구간 안정','레이드 딜 상위'],cons:['격노가 평준화돼 크리 맞고 25% 폭딜 없음','세계 버프 의존','자힐 없음'],
+  race:'<b>인간</b>(검) / <b>오크</b>(도끼·기절 감소) / <b>트롤</b>(광폭화 가속 10%)',
+  op:[sk('돌진')+' → '+sk('피의 갈증'),sk('소용돌이')+' (보조무기 포함)',sk('영웅의 일격')+' 분노 여유 시',sk('죽음의 소원')+' 폭딜 구간',sk('광폭화 격노')+' 이동 방해 해제'],opn:'광란·격노가 약해져 크리 의존도 감소, 분노 관리 위주.'},
+ {n:'방어',role:'방패 탱',
+  ch:[M+'방패 전문화: 막기 시 분노 5',M+'방어의 대가: 방패 착용 시 회피·무기 막기에 분노 5',M+'수호자: 방어 태세 돌진',M+'복수 강화: 피해 60%↑, 기절 삭제',M+'무장 해제·방벽 쿨 감소, 집중된 분노: 공격 기술 분노 -3'],
+  lv:1,lvn:'레벨링 스펙으로는 비추',pve:4,pven:'분노 수급 대폭 개선. 방어 성기사에 밀린다는 예측 있음',pvp:1,pvpn:'PvP 용도 아님(D 예측)',
+  pros:['분노 굶주림 해결','저분노 운용 편함'],cons:['방어 성기사 신규 툴킷에 비교됨','PvP 가치 낮음'],
+  race:'<b>타우렌</b>(체력) / <b>드워프</b>(돌가죽) / <b>인간</b>',
+  op:[sk('돌진')+' → '+sk('방패 막기'),sk('복수')+' 발동 시',sk('천둥벼락')+' 광역 어그로',sk('방패 밀쳐내기')],opn:'탱 사이클. 어그로용.'}
+ ]},
+
+{id:'paladin',name:'성기사',color:'#F58CBA',icon:'i-paladin',tag:'신성 하이브리드, 얼라이언스 + 언데드',
+ base:'<b>기본 스킬화</b> 왕의 축복, 신성화. 축복 1시간. 신성 일격(신규 기본, 6레벨): 무기 피해 + 신성 피해 짧은 쿨. 분노의 문장(신규): 파티 흡수막 + 심판 시 도발. 문장이 심판에 소모되지 않음, 신성 충격 10초 쿨. '+F+' 개발진이 명시한 유지되는 약점: 차단 없음, 감속 없음. '+F,
+ races:['인간','드워프','언데드'],
+ ov:{lv:3,lvn:'신성 일격·신성화 기본으로 클래식보다 빠름',pve:5,pven:'방어 탱 최상위 예측, 신성 힐 안정',pvp:3,pvpn:'징벌 B 예측. 차단·감속 부재가 명시적 한계',sum:'클래식에서 가장 크게 바뀐 직업. 방어는 S급 예측, 징벌은 두 갈래 플레이 가능.'},
+ specs:[
+ {n:'신성',role:'단일 힐 + 광역 보조',
+  ch:[M+'신성 충격 21pt로 이동',M+'빛의 의무(궁극기): 광역 힐 또는 광역 딜',M+'신성 충격·신성 딜 주문 피해·적중·치명타 특성 추가',M+'쇼카딘 빌드: 지능템 + 빛의 경계(신성 충격 연속 2회)'],
+  lv:2,lvn:'힐 스펙 레벨링은 느림. 쇼카딘은 별개',pve:4,pven:'2~3순위 탱힐 예측. 광역 보조 추가',pvp:3,pvpn:'힐 A / 쇼카딘 B 예측',
+  pros:['인내·정화·왕축 유지','광역 힐 옵션 생김'],cons:['복원 주술사·수양 사제보다 덜 채워졌다는 평'],
+  race:'<b>인간</b>(기절 해제) / <b>드워프</b>(돌가죽)',
+  op:[sk('신성 충격'),sk('빛의 섬광')+' 반복',sk('빛의 의무')+' 광역 상황',sk('축복의 보호막')+' 위기'],opn:'힐 우선순위. 쇼카딘은 심판→신성 충격 x2→신성 일격.'},
+ {n:'방어',role:'방패 탱',
+  ch:[M+'방패 전문화(11pt): 막기 시 마나 회복',M+'분노의 문장 흡수 완전 소모 시 마나 회복(상위 몹 45%↑)',M+'신속한 심판(16pt): 심판 쿨 즉시 초기화 + 다음 심판 무료',M+'성전사의 방벽: 최대 체력 100% 흡수막 8초, 인내 부여'],
+  lv:2,lvn:'광역 사냥은 가능, 단일은 느림',pve:5,pven:'양 진영 통틀어 최강 탱 예측. 마나 문제 해결',pvp:2,pvpn:'딜 스펙 아님. 탱키한 징기 서브 특성으로는 활용',
+  pros:['도발 생김','마나 문제 해결','위기 버튼 생김'],cons:['너프 가능성 거론'],
+  race:'<b>언데드</b>(신규, 방어 패시브) / <b>드워프</b> / <b>인간</b>',
+  op:[sk('신성화'),sk('분노의 문장')+' → '+sk('심판')+' 도발',sk('신성 일격'),sk('신성한 방패')],opn:'탱 사이클.'},
+ {n:'징벌',role:'근접 신성 딜',
+  ch:[M+'빛의 비틀기(31pt): 문장 교체 시 다음 근접 공격에 이전 문장 효과 적용 — 문장 트위스팅 자동화',M+'지능 → 주문력 변환 특성(쇼카딘 경로)',M+'신성 일격 피해 10%, 심판 자동 갱신',F+'차단·감속 없음 유지'],
+  lv:3,lvn:'신성 일격·신성화로 클래식보다 확실히 낫다',pve:3,pven:'기능은 하나 상향폭이 다른 스펙보다 작다는 평',pvp:3,pvpn:'B 예측. 폭딜은 있으나 카이팅 상대 답 없음',
+  pros:['문장 트위스팅이 쉬워짐','왕축·인내·정화·기절 유지'],cons:['차단 없음','감속 없음','다른 트리보다 덜 받았다는 평'],
+  race:'<b>인간</b>(기절 해제로 1:1 우위, 검 치명타) / <b>언데드</b>(공포 해제)',
+  op:[sk('심판')+' (문장 유지됨)',sk('문장 교체')+' → 빛의 비틀기 발동',sk('신성 일격'),sk('망치')+' 기절 후 폭딜'],opn:'문장 A 심판 → 문장 B 부여 → 다음 자동공격에 A+B. 정확한 타이밍은 베타 확인.'}
+ ]},
+
+{id:'shaman',name:'주술사',color:'#0070DE',icon:'i-shaman',tag:'정령 하이브리드, 호드 + 드워프·스카이본(호드)',
+ base:'<b>기본 스킬화</b> 토템 투사, 토템 소환. 화염 정기 폭발이 토템에서 직접 시전하는 주문으로 변경. 유령 늑대 실내 사용 가능. 피의 욕망/영웅심 없음(고양 개인용만). '+M,
+ races:['드워프','오크','타우렌','트롤','스카이본'],
+ ov:{lv:4,lvn:'고양 자힐·기동, 정기 광역 속박',pve:5,pven:'복원 필수급, 고양 탱·딜 겸용 예측',pvp:5,pvpn:'고양 S 예측 1위, 정기 A',sum:'예측글마다 1위로 꼽는 직업. 얼라이언스는 드워프로만 가능.'},
+ specs:[
+ {n:'정기',role:'원거리 자연 딜',
+  ch:[M+'용암 폭발(신규): 화염 충격 대상 피해 10%↑',M+'대지 결속 토템: 광역 속박 5초',M+'번개 과부하: 번개 화살·연쇄 번개 절반 피해 복제',M+'폭풍의 눈: 밀림 69% 감소, 정령의 손길: 화염 충격 사거리 16m',M+'물의 보호막 11pt'],
+  lv:4,lvn:'속박·연쇄 번개 광역, 마나는 물의 보호막',pve:4,pven:'리분·불성 정기 느낌으로 상향',pvp:4,pvpn:'A 예측. 드디어 진짜 CC 생김',
+  pros:['광역 속박','과부하 폭딜','밀림 저항'],cons:['판금 상대 근접 압박에 약함','토템 관리'],
+  race:'<b>오크</b>(저주 해제로 vs 흑마) / <b>트롤</b>(광폭화) / <b>드워프</b>(돌가죽) 얼라',
+  op:[sk('화염 충격'),sk('용암 폭발'),sk('번개 화살')+' 과부하 대기',sk('대지 결속')+' 근접 붙으면',sk('연쇄 번개')+' 다수'],opn:'화충 유지 → 용암 폭발이 핵심.'},
+ {n:'고양',role:'근접 하이브리드 / 5인 탱 가능',
+  ch:[M+'선견자의 격노(궁극기): 25초 가속 30%, 2분 쿨 — 개인 블러드',M+'소용돌이 무기: 완전 중첩 시 번개 화살 즉시',M+'폭풍의 일격 16pt, 강화 시 마나 회복·회피/무기막기 시 초기화',M+'정령 무기(21pt): 록타르 없을 때 위협 감소, 있을 때 증가 → 5인 탱',M+'유령 늑대 즉시 시전(6pt)'],
+  lv:5,lvn:'자힐·기동·물의 보호막. 최상위 레벨링 예측',pve:4,pven:'탱 가능성 + 발동 위주 딜',pvp:5,pvpn:'S 예측 1위. 가장 응집된 트리',
+  pros:['개인 블러드','즉시 번개 발동','탱·딜·힐 전환','정화'],cons:['얼라는 드워프 고정','무기 의존','천적 없는 대신 폭딜 창 짧음'],
+  race:'<b>드워프</b>(얼라 유일, 돌가죽) / <b>오크</b>(혈기·도끼) / <b>트롤</b>',
+  op:[sk('유령 늑대')+' 접근',sk('폭풍의 일격'),sk('대지 충격'),'소용돌이 5중첩 → '+sk('번개 화살')+' 즉시',sk('선견자의 격노')+' 폭딜'],opn:'소용돌이 중첩 관리가 손맛의 핵심.'},
+ {n:'복원',role:'파티·레이드 힐',
+  ch:[M+'급류(신규): 15초 지속 힐 + 연쇄 치유 25%↑',M+'물의 보호막, 마나 해일 16pt, 자연의 신속함 유지',M+'수호 토템: 돌가죽·바람의 벽 강화'],
+  lv:2,lvn:'힐 스펙 레벨링 느림',pve:5,pven:'탱힐 + 광역힐 동시, 필수급 예측',pvp:4,pvpn:'S(힐) 예측',
+  pros:['급류 → 연쇄 치유 콤보','마나 해일','정화·토템 유틸'],cons:['근접 압박에 약함'],
+  race:'<b>트롤</b> / <b>타우렌</b>(체력·기절) / <b>드워프</b>',
+  op:[sk('급류')+' 탱',sk('연쇄 치유')+' 탱 기점',sk('치유의 물결'),sk('자연의 신속함')+' 위기'],opn:'힐 우선순위.'}
+ ]},
+
+{id:'hunter',name:'사냥꾼',color:'#ABD473',icon:'i-hunter',tag:'원거리 물리 + 펫, 인간 신규',
+ base:'<b>기본 스킬화</b> 조준 사격. 데드존 유지. 외로운 늑대(사격 11pt): 펫 없이 피해 20%↑. 각 트리에 전투 중 마나 회복 패시브. 날카로운 침은 아직 미확인. '+M,
+ races:['인간','드워프','나이트 엘프','스카이본','오크','타우렌','트롤'],
+ ov:{lv:5,lvn:'펫·원거리·카이팅. 솔로 레벨링 1순위 예측',pve:3,pven:'생존 근접 딜 신규, 사격 궁극기',pvp:4,pvpn:'근접 생존 S / 사격 A 예측',sum:'레벨링 최강 예측. 생존이 근접 딜러로 완전히 재편된 게 최대 변화.'},
+ specs:[
+ {n:'야수',role:'펫 중심 원거리',
+  ch:[M+'치명적 사냥술(1행): 근접에도 매의 상 효과',M+'매 소환: 18초 도트, 2마리, 비전 사격과 쿨 공유',M+'위협·야수의 격노 동일, 야수의 격노는 펫만 강화'],
+  lv:5,lvn:'펫 탱 레벨링 최상',pve:2,pven:'펫 피해 낮음, 사냥꾼 본인 딜 부족',pvp:2,pvpn:'C 예측. 펫이 약하고 잘 죽음',
+  pros:['레벨링 편함','펫 유틸'],cons:['본인 딜 강화 없음','매가 NPC가 아니라 도트'],
+  race:'<b>트롤</b>(야수 종특) / <b>나이트 엘프</b> / <b>오크</b>',
+  op:[sk('사냥꾼의 징표'),sk('매 소환')+' x2',sk('비전 사격'),sk('일제 사격'),sk('야수의 격노')],opn:'매 2마리 유지 후 비전 사격 스팸 구조로 추정.'},
+ {n:'사격',role:'원거리 저격',
+  ch:[M+'매의 눈 앞 행으로 이동',M+'신중한 조준(2행): 지능 20% → 공격력',M+'외로운 늑대(11pt): 펫 없이 피해 20%',M+'독사 침 강화: 쿨 4초 감소(쿨 생김)',M+'저격 사격(궁극기): 4초 시전, 15초 쿨. 조준 사격 기본',M+'신속한 사냥·회복: 연속 처치 시 마나 회복'],
+  lv:4,lvn:'외로운 늑대로 펫 없이도 가능',pve:4,pven:'서서 저격하는 딜',pvp:4,pvpn:'A 예측. 저격 사격 물몸 원콤 가능성',
+  pros:['저격 폭딜','펫 관리 자유','사거리'],cons:['4초 시전은 차단·근접에 취약','독사 침 쿨 생김'],
+  race:'<b>나이트 엘프</b>(엘룬의 빛 15초 치명타 10% + 저격) / <b>인간</b>(신규, 은신 감지) / <b>트롤</b>(활)',
+  op:[sk('사냥꾼의 징표'),sk('조준 사격'),sk('저격 사격')+' 4초 시전',sk('일제 사격'),sk('비전 사격')+' 이동 중'],opn:'저격 사격을 어디에 넣느냐가 전부.'},
+ {n:'생존',role:'근접 쌍수 딜 (완전 재편)',
+  ch:[M+'덫 속박 5초(2행), 날개 절단 강화 3pt로 비용 감소',M+'포식자의 날: 근접 치명타 피해·보조무기 피해↑ → 쌍수 필수',M+'사냥감 폭로(21pt): 근접 타격 시 몽구스 발동',M+'열상(궁극기): 몽구스에 출혈 40%',M+'스트라이더 킥(신규): 근접 100% 즉시, 8초 쿨',M+'자원 활용: 전투 중 마나 회복 50%, 5인 탱 가능성(회피·체력)'],
+  lv:3,lvn:'근접이라 펫 탱 못 살림, 마나는 OK',pve:4,pven:'근접 파티에서 새 자리. 탱은 위협 특성 없어 미지수',pvp:4,pvpn:'근접 S / 원거리 상대 C 예측. 덫+발동 근접',
+  pros:['SoD 근접 사냥꾼 상위 호환','덫 광역 속박','내장 차단'],cons:['원거리 상대 약함','은신 오프너에 취약'],
+  race:'<b>오크</b>(혈기·도끼) / <b>인간</b>(검·기절 해제) / <b>드워프</b>(돌가죽)',
+  op:[sk('덫')+' 사전 설치',sk('스트라이더 킥'),sk('몽구스 물기')+' 발동 시',sk('맹금 일격'),sk('날개 절단')+' 속박'],opn:'생존은 이제 사냥꾼이 아니라 근접 클래스로 상성을 봐야 함.'}
+ ]},
+
+{id:'rogue',name:'도적',color:'#d4c11f',icon:'i-rogue',tag:'은신 근접, 도끼 사용 가능',
+ base:'<b>공통</b> 콤보 포인트가 대상 변경 시 유지. 도끼 착용 가능. 방어구 가르기 강화 → 기력 -5, 5콤보 시 콤보 1 환급. 혼절시키기 강화는 캡처에서 안 보임(은신 해제 여부 미확인). '+M,
+ races:['인간','드워프','나이트 엘프','노움','스카이본','오크','언데드','트롤'],
+ ov:{lv:3,lvn:'은신으로 위험 회피, 회복 없어 중간',pve:4,pven:'암살 독 빌드 상향, 전투 안정',pvp:4,pvpn:'전투·암살 A / 잠행 D 예측. 직업 툴킷은 S',sum:'PvP 툴킷은 여전히 S급. 트리 간 격차가 커져 잠행이 예측상 최하위.'},
+ specs:[
+ {n:'암살',role:'독 폭딜 (재편)',
+  ch:[M+'절단(5행 신규): 기력 60, 양손 75% + 13, 중독 대상 20%↑, 콤보 2',M+'맹독(7행 신규): 마무리 기술, 독 피해 30%↑ + 적용 확률 10%↑, 9~21초',M+'급소 가격 강화: 기절 대상 내 피해 5%(파티→개인)',M+'관통상(전투 2행): 등 뒤 찌르기 치명타 10%·절단 5%, 추가 콤보 확률',M+'냉혈 16pt 행으로 이동'],
+  lv:3,lvn:'독 유지 사냥, 회복 없음',pve:5,pven:'단검 도적 PvE 정답 예측',pvp:4,pvpn:'A 예측. 장비 붙으면 실제 1위 가능성',
+  pros:['독이 진짜 빌드','냉혈 접근 쉬움','미러전 개인 딜 상향'],cons:['콤보 생성 무작위성↑','돌가죽 드워프에 독 끊김'],
+  race:'<b>인간</b>(은신 감지·기절 해제) / <b>노움</b>(기력 5%) / <b>오크</b>(저주 해제·도끼)',
+  op:[sk('급소 가격')+' 은신 오프너',sk('절단')+' x2',sk('맹독')+' 유지',sk('절단')+' → '+sk('절개'),sk('냉혈')+' 절개 크리'],opn:'맹독 유지 + 독 갱신이 사이클의 중심.'},
+ {n:'전투',role:'검·도끼 지속 딜',
+  ch:[M+'쉼 없는 칼날(4행 신규): 피해 마무리 기술이 아드레날린 촉진·칼날 부채·회피·전력 질주·소멸 쿨 콤보당 2초 감소',M+'무기 숙련 → 무시·회피당할 확률 1% 감소',M+'쌍수 무기 전문화 1랭크 10%→5%'],
+  lv:4,lvn:'칼날 부채 광역, 회피 자주 돌아옴',pve:4,pven:'긴 전투에서 아드레날린 추가 사용',pvp:4,pvpn:'A 예측. 소멸·회피 회전율이 PvP 핵심',
+  pros:['생존기 쿨 감소','비단검 자유','안정성'],cons:['등 뒤 찌르기 비싸 싼 빌더 강제','폭딜은 암살보다 낮음'],
+  race:'<b>인간</b>(검 치명타 2% + 은신 감지) / <b>오크</b>(도끼·혈기) / <b>노움</b>(전장)',
+  op:[sk('급소 가격')+' 또는 '+sk('가로막기'),sk('사악한 일격')+' x4~5',sk('난도질')+' 유지',sk('절개'),'쿨 감소로 '+sk('아드레날린 촉진')+' 재사용'],opn:'마무리 기술을 자주 쓸수록 생존기가 빨리 돈다.'},
+ {n:'잠행',role:'단검 오프너 / PvP 특화',
+  ch:[M+'출혈 재편: 무기 100%(단검 145%), 대상이 내 파열 피해 15% 더 받음, 15초',M+'목 베기(6행 신규): 등 뒤 찌르기 시 다음 매복 은신 없이 사용(확률, 캡처 3%/원글 15%)',M+'천 번의 베기(7행 신규): 파열 틱마다 다음 출혈·등 뒤 찌르기 기력 -3, 5중첩',M+'예지력 21pt로 이동 → 냉혈과 동시 선택 가능'],
+  lv:2,lvn:'단일 폭딜형, 다수 사냥 약함',pve:2,pven:'PvE 자리 거의 없음',pvp:2,pvpn:'D 예측(트리 특성 다수 무용). 단, 예지력+냉혈 동시 선택으로 오프너는 역대 최강',
+  pros:['예지력+냉혈 오프너','파열 유지가 기력을 돌려줌','전투 중 매복 발동'],cons:['궁극기까지 억지로 내려가야 함','전투가 대부분 상황에서 우위라는 평'],
+  race:'<b>인간</b>(기절 해제·은신 감지) / <b>나이트 엘프</b>(엘룬의 빛 폭딜) / <b>언데드</b>',
+  op:[sk('예지력')+' → '+sk('냉혈'),sk('매복')+' 은신 오프너',sk('출혈')+' → '+sk('파열'),sk('등 뒤 찌르기')+' 목 베기 대기',sk('매복')+' 발동 시'],opn:'파열이 돌아가는 동안 빌더가 싸진다.'}
+ ]},
+
+{id:'druid',name:'드루이드',color:'#FF7D0A',icon:'i-druid',tag:'변신 하이브리드, 나이트 엘프·타우렌·스카이본',
+ base:'<b>기본 스킬화</b> 청명의 징표, 부활(전투 외 10초 시전, 쿨 없음). 환생은 30분 쿨 전투 부활. 해충 떼는 복원→조화. 파워시프팅은 사실상 사라짐. '+M,
+ races:['나이트 엘프','타우렌','스카이본'],
+ ov:{lv:4,lvn:'변신 유연성, 자힐. 상위 레벨링 예측',pve:4,pven:'곰탱 A 예측, 복원 급속 성장',pvp:3,pvpn:'직업 툴킷 S / 표범 딜 C 예측',sum:'"안 죽는" 직업. 딜 스펙으로 죽이는 게 아니라 은신·기동·힐로 싸움을 고르는 직업.'},
+ specs:[
+ {n:'조화',role:'원거리 자연/비전 딜',
+  ch:[M+'이클립스: 천벌이 다음 별빛 섬광 시전 0.5초 감소, 4중첩 → 교차 시전 유도',M+'과성장(21pt 신규): 얽힌 뿌리 추가 2대상',M+'해충 떼 조화로 이동, 주기 피해·치유 특성 다수',P+'별똥별·별빛 쇄도 같은 후기 기술은 없음'],
+  lv:4,lvn:'뿌리+천벌 레벨링 무난',pve:3,pven:'역대 최고 클래식 조화라는 평, 여전히 중위',pvp:2,pvpn:'B~D 예측. 암사·흑마에 밀림. 과성장은 전장 유틸',
+  pros:['다중 속박','역대 최고 조화 트리','전장 유틸'],cons:['직접 PvP 열세','마나'],
+  race:'<b>나이트 엘프</b>(엘룬의 빛을 이클립스 중첩에 맞춤) / <b>타우렌</b>',
+  op:[sk('달빛섬광')+' 도트',sk('해충 떼'),sk('천벌')+' x4 중첩',sk('별빛 섬광')+' 단축 시전',sk('얽힌 뿌리')+' 근접 상대'],opn:'천벌 4회 → 별빛 섬광 교차가 이클립스.'},
+ {n:'야성',role:'곰 탱 / 표범 딜',
+  ch:[M+'곰이 짓이기기 획득 (표범 미확인 → 캡처 기준 곰 전용)',M+'광폭화(궁극기): 짓이기기 3대상, 쿨 제거, 콤보 기술 치명타 100%, 공포 면역, 15초',M+'정글의 왕: 즉시 기력 60',M+'파워시프팅 사망',P+'곰·표범 둘 다 완성할 포인트 부족 → 딜 또는 방어 중 타협'],
+  lv:4,lvn:'표범 은신·곰 탱·자힐. 안정적',pve:4,pven:'곰탱 A 예측(광폭화 다중 짓이기기, 전투 부활). 표범 딜은 C 예측',pvp:3,pvpn:'직업 S(기동·탈출) / 표범 딜 C. 나엘 엘룬의 빛 15초 = 광폭화 15초',
+  pros:['광폭화 공포 면역 15초','은신·여행 형상·자힐 = 최고 생존','5인 곰탱 가능'],cons:['표범 딜 낮음(짓이기기 곰 전용이면)','냉법 뿌리 상성 여전히 힘듦','포인트 부족'],
+  race:'<b>나이트 엘프</b>(엘룬의 빛 치명타 10% 15초, 사망 시 이속 75%) / <b>타우렌</b>(전쟁 발구르기)',
+  op:[sk('표범 은신')+' 접근 → '+sk('할퀴기')+' 기절',sk('갈퀴 발톱')+' → '+sk('갈기갈기')+' x2',sk('광폭화')+' + '+sk('엘룬의 빛')+' 동시',sk('흉포한 이빨')+' 마무리',sk('곰 변신')+' 버티기 / '+sk('여행 형상')+' 이탈'],opn:'표범 딜이 진짜 C면 곰·힐 비중을 높인 "안 죽는 야드"로.'},
+ {n:'복원',role:'HoT 힐',
+  ch:[M+'급속 성장(궁극기): 광역 지속 힐',M+'신속한 치유 16pt로 앞당김',M+'대지어머니의 선물: 회복·신속한 치유·급속 성장 글쿨 0.5초 감소',F+'버프·디버프 상한 해제 → 복원 드루 다수 중첩 가능'],
+  lv:2,lvn:'힐 스펙 레벨링 느림',pve:4,pven:'급속 성장 하나로 A 예측, 다수 기용 가능',pvp:4,pvpn:'A(힐) 예측. 기동·은신 힐러',
+  pros:['급속 성장','즉시시전 힐 회전','은신·여행 형상'],cons:['정화·마나 압박에 약함'],
+  race:'<b>나이트 엘프</b>(회복 크리 확정용 엘룬의 빛) / <b>타우렌</b>',
+  op:[sk('회복')+' 유지',sk('신속한 치유'),sk('급속 성장')+' 광역',sk('자연의 신속함')+' → '+sk('치유의 손길')],opn:'힐 우선순위.'}
+ ]},
+
+{id:'priest',name:'사제',color:'#8fa3bd',icon:'i-priest',tag:'신성/암흑, 노움 신규',
+ base:'<b>기본 스킬화</b> 죽음의 선고, 파멸의 역병, 공포의 수호물(전 종족). 종족 사제 기술 유지·개편: 언데드 암흑 희생(대형 흡수), 드워프 징벌(짧은 속박)+필사의 기도, 인간 신성한 은총(약화된 영혼 제거 후 힐), 나엘 별의 파편·요정의 은총. '+M,
+ races:['인간','드워프','나이트 엘프','노움','스카이본','언데드','트롤'],
+ ov:{lv:3,lvn:'강타 사제 빌드 생김, 암흑 마나 50%↓',pve:5,pven:'수양 S 예측, 암흑 PvE 최적화',pvp:3,pvpn:'암흑 B 예측, 수양 S(힐)',sum:'수양이 크게 올라왔고 암흑은 도트 크리로 안정. 종족 사제 기술 때문에 종족 선택이 특히 중요.'},
+ specs:[
+ {n:'수양',role:'보호막 힐 + 마력 주입',
+  ch:[M+'영혼 수호: 보호막 쿨 4초 감소',M+'새로워진 희망: 약화된 영혼 대상 힐·참회 치명타 2%, 치명타마다 약화된 영혼 1초 감소',M+'참회(신규), 마력 주입 유지'],
+  lv:2,lvn:'힐 레벨링 느림',pve:5,pven:'S 예측. 보호막 탱에 힐 스팸 구조',pvp:4,pvpn:'S(힐) 예측. 참회로 공격도 가능',
+  pros:['보호막 회전','참회','마력 주입'],cons:['고립 시 취약'],
+  race:'<b>언데드</b>(암흑 희생·공포 해제) / <b>인간</b>(신성한 은총·기절 해제) / <b>드워프</b>(징벌 속박)',
+  op:[sk('보호막')+' 탱',sk('참회'),sk('순간 치유')+' 크리 → 약화된 영혼 단축',sk('마력 주입')+' 폭딜 지원'],opn:'힐 우선순위.'},
+ {n:'신성',role:'힐 / 강타 딜',
+  ch:[M+'치유의 기원(신규)',M+'교차 힐 보상 특성',M+'강타 빌드: 권능과 빛 — 신성한 불꽃 대상 강타·참회 피해 10%↑, 성스러운 일격 발동'],
+  lv:3,lvn:'강타 사제로 레벨링 가능',pve:3,pven:'C 예측. 수양·복원 주술사보다 덜 흥미롭다는 평',pvp:2,pvpn:'강타 B 예측',
+  pros:['강타 빌드 성립','치유의 기원'],cons:['수양 대비 툴킷 부족'],
+  race:'<b>인간</b> / <b>드워프</b> / <b>노움</b>(신규, 마나 5%)',
+  op:[sk('신성한 불꽃'),sk('강타')+' x n',sk('참회'),sk('성스러운 일격')+' 발동 시'],opn:'강타 빌드 기준.'},
+ {n:'암흑',role:'도트 딜',
+  ch:[M+'도트 치명타 적용',M+'암흑 형상: 마나 소모 50% 감소',M+'파멸의 역병·죽음의 선고·공포의 수호물 기본',P+'PvE 딜 최적화 트리'],
+  lv:4,lvn:'마나 문제 해결로 레벨링 상향',pve:4,pven:'PvE 딜 최적화',pvp:3,pvpn:'B 예측. 흑마와 역할 겹침',
+  pros:['마나 해결','도트 크리','공포 유지'],cons:['흑마 아래 평가','근접 압박에 약함'],
+  race:'<b>언데드</b>(공포 해제·암흑 희생) / <b>트롤</b> / <b>나이트 엘프</b>(별의 파편)',
+  op:[sk('어둠의 권능: 고통'),sk('정신의 채찍'),sk('파멸의 역병'),sk('죽음의 선고')+' 마무리',sk('정신 분열')],opn:'클래식 암사 사이클 + 파멸의 역병 기본.'}
+ ]},
+
+{id:'mage',name:'마법사',color:'#69CCF0',icon:'i-mage',tag:'원거리 캐스터, 오크 신규',
+ base:'<b>공통</b> 모든 트리에 발동형 기술이 들어감. 눈보라 감속 너프(광역 파밍 어려워질 수 있음). 물·음식 제작, 순간이동 유지. '+M,
+ races:['인간','노움','스카이본','오크','언데드','트롤'],
+ ov:{lv:5,lvn:'뿌리·감속·광역. 레벨링 최상위 예측',pve:4,pven:'비전 종이딜 1위(마나 문제), 화염 연속 작열',pvp:4,pvpn:'냉기 A / 화염 B / 비전 C 예측',sum:'컨트롤 캐스터의 정석. 상대가 뭘 할 수 있는지를 바꾸는 직업.'},
+ specs:[
+ {n:'비전',role:'비전 폭딜 (마나 도박)',
+  ch:[M+'비전 폭발: 무료 비전 화살 도박',M+'화살 폭풍 발동',P+'시연에서 마나 고갈 관측'],
+  lv:3,lvn:'마나 문제',pve:4,pven:'종이 딜 1위, 마나가 문제',pvp:2,pvpn:'C 예측',
+  pros:['최고 폭딜 잠재'],cons:['마나 고갈'],
+  race:'<b>노움</b>(마나 5%·유레카) / <b>인간</b> / <b>트롤</b>',
+  op:[sk('비전 폭발')+' 중첩',sk('비전 화살')+' 발동 시 무료',sk('얼음 방패')+' 방어'],opn:'중첩 관리.'},
+ {n:'화염',role:'화염 폭딜',
+  ch:[M+'연속 작열: 시전 시간 75% 감소(즉시 화염 작열 아님)',M+'점화·발화 유지',P+'발화 + 연속 작열 조합 던전·필드 PvP 강세'],
+  lv:4,lvn:'폭딜 레벨링',pve:4,pven:'발화 점화 창',pvp:3,pvpn:'B 예측',
+  pros:['발화 폭딜','점화'],cons:['화염 저항 몹','즉시 작열은 아님'],
+  race:'<b>노움</b>(유레카 + 발화 = 점화 창) / <b>오크</b>(신규, 혈기 주문력) / <b>트롤</b>',
+  op:[sk('불태우기'),sk('불덩이 작렬'),sk('발화')+' → '+sk('화염 작열')+' 연속 작열',sk('용의 숨결')+' 근접'],opn:'발화 켜고 연속 작열 굴리기.'},
+ {n:'냉기',role:'컨트롤 / 카이팅',
+  ch:[M+'얼음 창, 서리 손가락',M+'눈보라 감속 너프',P+'하드코어 던전·필드 최적 예측'],
+  lv:5,lvn:'냉기 레벨링 정석',pve:3,pven:'안정형',pvp:4,pvpn:'A 예측. 근접 상대 거리 통제',
+  pros:['카이팅 툴 전부','생존','서리 손가락 폭딜'],cons:['흑마·사제 압박','눈보라 광역 약화'],
+  race:'<b>노움</b>(속박 면역·마나) / <b>인간</b>(기절 해제) / <b>언데드</b>(공포 해제)',
+  op:[sk('얼음 회오리')+' → '+sk('서리 화살'),sk('얼음 창')+' 서리 손가락 시',sk('점멸')+' 거리',sk('변이')+' 리셋'],opn:'뿌리 → 서리 손가락 → 얼음 창.'}
+ ]},
+
+{id:'warlock',name:'흑마법사',color:'#9482C9',icon:'i-warlock',tag:'도트·악마 캐스터, 트롤 신규',
+ base:'<b>공통</b> 도트가 치명타 적용. 고통의 저주 → 고통의 재앙(원소의 저주와 중첩). 소각(신규 화염 주문). 악마 없이 고통/파괴 플레이 용이. '+M,
+ races:['인간','노움','스카이본','오크','언데드','트롤'],
+ ov:{lv:5,lvn:'악마 탱·흡수. 최상위 레벨링 예측',pve:4,pven:'도트 크리로 상향',pvp:3,pvpn:'세 트리 모두 B, 악마 결투 최강 예측. 최대 변수',sum:'예측글이 공통으로 "가장 큰 와일드카드"로 꼽는 직업. 메타 자리 잡으면 A 가능.'},
+ specs:[
+ {n:'고통',role:'도트 소모전',
+  ch:[M+'판데믹: 부패·고통의 재앙·파멸의 재앙·영혼 흡수·생명력 흡수·생명력 착취·희망 흡수 치명타 피해 100%↑',M+'흡수 강화: 20% 이하 영혼 흡수 3배',M+'희망 흡수(신규): 암흑 피해 + 대상 암흑 도트 10%↑',M+'채널링 강화 특성 다수'],
+  lv:5,lvn:'도트 굴리고 흡수, 다운타임 없음',pve:4,pven:'도트 크리로 상향',pvp:3,pvpn:'B 예측 → A 가능',
+  pros:['다수 압박','흡수 생존','공포'],cons:['기동력','언데드 공포 해제'],
+  race:'<b>트롤</b>(신규, 재생 + 생명력 전환) / <b>언데드</b>(생명력 흡수 시너지) / <b>노움</b>',
+  op:[sk('부패')+' → '+sk('고통의 재앙'),sk('희망 흡수'),sk('생명력 착취'),sk('공포')+' 컨트롤',sk('영혼 흡수')+' 20% 이하'],opn:'도트 전부 깔고 희망 흡수로 증폭.'},
+ {n:'악마',role:'펫 시너지 / 결투',
+  ch:[M+'악마의 서약: 악마 희생 버프 유지 + 다른 펫 소환 가능',M+'녹은 피부: 받는 피해 10% 감소, 영혼 고리 30% 전이, 악마 에너지 펫 회복',M+'흡수/보호 콤보 복귀 → 최대 30%대 피해 감소(캡처 흐릿)',P+'악마 형상 5인 탱 가능성'],
+  lv:5,lvn:'펫 탱 + 흡수. 가장 편한 레벨링',pve:3,pven:'탱 가능성 실험 단계',pvp:3,pvpn:'B 예측이나 결투·필드 흑마 최강',
+  pros:['임프 희생 15% + 지옥사냥개 동시','피해 감소 중첩','펫 유틸'],cons:['폭딜 낮음','펫 관리'],
+  race:'<b>오크</b>(펫 강화·혈기) / <b>노움</b>(속박 면역·마나) / <b>트롤</b>',
+  op:['임프 '+sk('악마 희생')+' → 지옥사냥개 소환',sk('부패')+' → '+sk('고통의 재앙'),sk('암흑 화살'),sk('공포'),sk('생명력 흡수')+' 회복'],opn:'서약으로 버프 유지가 핵심.'},
+ {n:'파괴',role:'화염 폭딜',
+  ch:[M+'그림자와 불꽃: 점화 중첩당 암흑 피해 2%, 20초',M+'어둠의 불길: 영혼 조각 100% 환급',M+'여파: 점화 100% 도취(50% 감속 5초)',M+'파괴의 재앙: 피해 15% 분산',M+'소각(신규)'],
+  lv:4,lvn:'폭딜형',pve:4,pven:'소각·점화 시너지',pvp:3,pvpn:'B 예측. 전장 분산 피해 유틸',
+  pros:['도취 감속','조각 걱정 없음','전장 분산'],cons:['시전 시간','기동력'],
+  race:'<b>오크</b>(혈기 주문력) / <b>트롤</b>(광폭화) / <b>노움</b>(유레카)',
+  op:[sk('제물')+' → '+sk('점화')+' 도취',sk('소각'),sk('암흑 화살'),sk('어둠의 불길')+' 마무리 (조각 환급)'],opn:'점화 도취로 거리 벌리고 소각.'}
+ ]}
+];
+
+
+const RACES=[
+ {f:'얼라',n:'인간',a:'생존 의지(기절 해제) · 감지(은신 감지 20초)',p:'검 사용 시 주문·기술 치명타 2% · 정신력 5%',pvp:5,pvpn:'얼라 PvP 종특 정점. 도적·전사·미러전 상대 생존 직결',cls:'도적, 전사, 성기사, 사냥꾼(신규), 마법사'},
+ {f:'얼라',n:'드워프',a:'돌가죽(출혈·독·질병 면역 + 물리 피해 감소 8초)',p:'철퇴 치명타 1% · 야수 상대 피해 5%',pvp:4,pvpn:'도적·전사·사냥꾼 상대 최고 방어 종특',cls:'주술사(신규, 얼라 유일), 성기사, 사제, 사냥꾼, 전사'},
+ {f:'얼라',n:'나이트 엘프',a:'엘룬의 빛(15초 치명타 10%) · 그림자 숨기',p:'회피 1% + 이동속도 2% · 사망 시 이동속도 75%',pvp:4,pvpn:'폭딜 쿨기 생김. 광폭화 15초와 겹치는 야드, 저격 사냥꾼',cls:'드루이드, 사냥꾼, 도적, 전사, 사제'},
+ {f:'얼라',n:'노움',a:'탈출의 명수(속박·감속 해제 + 잠시 면역) · 유레카!(다음 3개 기술 비용 감소 + 피해·치유 10%)',p:'최대 마나·분노·기력 5% · 기계공학 특화',pvp:4,pvpn:'전장 특화. 분노·기력에도 5%가 적용돼 전사·도적이 진지한 선택지',cls:'마법사, 흑마법사, 전사, 도적, 사제(신규)'},
+ {f:'얼라',n:'스카이본',a:'공중 보행(10초 활강) · 지맥 활성화(체력·마나 재생 100%↑)',p:'가속 1% · 정령 피해 5%',pvp:2,pvpn:'전투 중 쓸 게 없어 PvP 후순위. 레벨링 편의',cls:'전사, 사냥꾼, 도적, 드루이드, 마법사(얼라)'},
+ {f:'호드',n:'오크',a:'피의 격노(15초 공격력·주문력 10%) · 저주 분쇄(저주 해제·면역 + 마법 피해 감소)',p:'강인함(기절 지속 20% 감소) · 도끼 치명타 1%',pvp:5,pvpn:'공격 쿨기 + 저주 해제. 흑마 상대 우위. 예측글 호드 최강',cls:'전사, 주술사, 사냥꾼, 도적, 흑마법사, 마법사(신규)'},
+ {f:'호드',n:'언데드',a:'포세이큰의 의지(매혹·공포·수면 해제, 면역은 삭제) · 암흑 희생(사제 전용 흡수)',p:'무덤의 손길(피해 시 생명력 흡수) · 암흑 저항',pvp:4,pvpn:'흑마·사제 공포 상대 여전히 강함. 면역 삭제로 클래식보다 한 단계 아래',cls:'사제, 흑마법사, 도적, 마법사, 전사, 성기사(신규)'},
+ {f:'호드',n:'타우렌',a:'전쟁 발구르기(주변 2초 기절)',p:'체력 증가 · 채집 속도',pvp:3,pvpn:'광역 기절 하나로 근접·힐러에게 실용적',cls:'드루이드, 전사, 주술사, 사냥꾼'},
+ {f:'호드',n:'트롤',a:'광폭화(10초 시전·공격 속도 10%) · 재생(체력 재생, 전투 중 일부 유지)',p:'활·투척 치명타 1% · 야수 상대 피해 5%',pvp:4,pvpn:'모든 딜러에게 통하는 가속 쿨기. 흑마 생명력 전환과 시너지',cls:'사냥꾼, 주술사, 사제, 마법사, 도적, 흑마법사(신규)'},
+ {f:'호드',n:'스카이본',a:'공중 보행(10초 활강) · 이동속도 10% 버프(호드)',p:'가속 1% · 정령 피해 5%',pvp:3,pvpn:'얼라 스카이본보다 PvP 유리(이속). 그래도 중하위',cls:'전사, 사냥꾼, 도적, 드루이드, 주술사(호드)'}
+];
+
+/* 직업별 종족 순위: 위에서부터 추천 순, PvE·PvP 가치 별점 */
+const RR={
+ warrior:[
+  {r:'인간(얼)',pve:5,pvp:5,w:'검 치명타 2% + 기절 해제 + 은신 감지. 필드 1:1 올라운더'},
+  {r:'노움(얼)',pve:3,pvp:5,w:'속박·감속 면역으로 "못 붙는" 약점 해결, 분노 5%. 전장 특화'},
+  {r:'오크(호)',pve:5,pvp:5,w:'도끼 치명타·피의 격노·기절 20%↓, 강철 의지와 중첩 35%'},
+  {r:'트롤(호)',pve:4,pvp:3,w:'광폭화 가속. 재생은 레벨링 편의. 예측글은 "최고 탱은 이제 아님"'},
+  {r:'드워프(얼)',pve:3,pvp:4,w:'돌가죽으로 도적·출혈 대응. 철퇴 빌드'},
+  {r:'타우렌(호)',pve:3,pvp:3,w:'체력·전쟁 발구르기. 탱 선호'},
+  {r:'언데드(호)',pve:3,pvp:3,w:'공포 해제로 흑마·사제 상대. 나머지 평범'}],
+ paladin:[
+  {r:'인간(얼)',pve:5,pvp:5,w:'기절 해제로 언데드 성기사 상대 1:1 우위. 검 빌드 치명타'},
+  {r:'언데드(호)',pve:5,pvp:4,w:'신규. 방어 탱용 패시브(예고편 언데드 방어 성기사). 공포 해제'},
+  {r:'드워프(얼)',pve:4,pvp:4,w:'돌가죽 + 철퇴 치명타. 방어·신성 안정'}],
+ shaman:[
+  {r:'오크(호)',pve:5,pvp:5,w:'저주 해제로 흑마 상대 우위, 피의 격노, 도끼. 예측글 "오크가 최강"'},
+  {r:'드워프(얼)',pve:4,pvp:5,w:'얼라 유일. 돌가죽이 고양 근접 PvP에 최적, 철퇴 치명타'},
+  {r:'트롤(호)',pve:5,pvp:4,w:'광폭화 가속 10% — 정기·복원 모두 좋음'},
+  {r:'타우렌(호)',pve:4,pvp:4,w:'전쟁 발구르기·체력. 복원·고양 생존'},
+  {r:'스카이본(호)',pve:3,pvp:3,w:'정령 피해 5% 패시브가 주술사에 직결. 이속 10%'}],
+ hunter:[
+  {r:'나이트 엘프(얼)',pve:5,pvp:5,w:'엘룬의 빛 15초 치명타 10% + 저격 사격 = 원콤 창. 그림자 숨기'},
+  {r:'트롤(호)',pve:5,pvp:4,w:'활 치명타·광폭화·야수 피해. 호드 사냥꾼 정석'},
+  {r:'오크(호)',pve:5,pvp:5,w:'피의 격노·도끼 — 근접 생존에 특히 좋음. 펫 강화'},
+  {r:'인간(얼)',pve:4,pvp:4,w:'신규. 은신 감지로 도적 오프너 방지, 기절 해제. 검 빌드 생존'},
+  {r:'드워프(얼)',pve:4,pvp:4,w:'야수 피해 5%, 돌가죽. 근접 생존 방어'},
+  {r:'타우렌(호)',pve:3,pvp:3,w:'전쟁 발구르기. 근접 생존에서만 의미'}],
+ rogue:[
+  {r:'인간(얼)',pve:5,pvp:5,w:'은신 감지(미러전 선타) + 기절 해제 + 검 치명타. 호드가 가장 싫어할 종족'},
+  {r:'오크(호)',pve:5,pvp:5,w:'도끼 사용 가능해지며 도끼 치명타 활용. 저주 해제로 흑마 상대 재은신 빠름'},
+  {r:'노움(얼)',pve:4,pvp:5,w:'기력 5%, 속박·감속 면역, 유레카 폭딜. 마법사 사냥 특화'},
+  {r:'나이트 엘프(얼)',pve:4,pvp:4,w:'엘룬의 빛이 칼날 부채·아드레날린과 겹침. 짧은 광역 싸움'},
+  {r:'언데드(호)',pve:4,pvp:4,w:'공포 해제로 흑마·사제 상대'},
+  {r:'트롤(호)',pve:4,pvp:3,w:'광폭화 공격 속도. 투척 치명타'},
+  {r:'드워프(얼)',pve:3,pvp:4,w:'철퇴 1%는 약하지만 돌가죽으로 미러전 독·출혈 대응'}],
+ druid:[
+  {r:'나이트 엘프(얼)',pve:5,pvp:5,w:'엘룬의 빛 15초 = 광폭화 15초 정확히 겹침. 복원 회복 크리 확정. 예측글 "PvE 최적"'},
+  {r:'타우렌(호)',pve:4,pvp:4,w:'전쟁 발구르기 광역 기절 + 체력. 곰탱·복원 생존'},
+  {r:'스카이본(양)',pve:3,pvp:3,w:'신규. 활강·가속 1%. 호드는 이속 10%'}],
+ priest:[
+  {r:'언데드(호)',pve:5,pvp:5,w:'암흑 희생(대형 흡수) + 공포 해제. 수양·암흑 모두 최상'},
+  {r:'인간(얼)',pve:4,pvp:5,w:'신성한 은총(약화된 영혼 제거 후 힐) + 기절 해제. 얼라 힐 사제 정석'},
+  {r:'드워프(얼)',pve:4,pvp:4,w:'징벌(짧은 속박) + 필사의 기도 + 돌가죽'},
+  {r:'나이트 엘프(얼)',pve:4,pvp:3,w:'별의 파편·요정의 은총 유지. 암흑 딜'},
+  {r:'트롤(호)',pve:4,pvp:3,w:'광폭화 시전 속도. 종족 사제 기술은 미확인'},
+  {r:'노움(얼)',pve:4,pvp:3,w:'신규. 마나 5%·유레카. 종족 사제 기술 미확인'}],
+ mage:[
+  {r:'노움(얼)',pve:5,pvp:5,w:'마나 5% + 유레카(발화 점화 창) + 속박 면역. 얼라 정석'},
+  {r:'트롤(호)',pve:5,pvp:4,w:'광폭화 시전 속도 10%'},
+  {r:'언데드(호)',pve:4,pvp:5,w:'공포 해제로 흑마·사제 상대'},
+  {r:'오크(호)',pve:4,pvp:4,w:'신규. 피의 격노 주문력 10%, 저주 해제'},
+  {r:'인간(얼)',pve:4,pvp:4,w:'기절 해제. 검 사용 시 주문 치명타 2%'},
+  {r:'스카이본(얼)',pve:3,pvp:2,w:'가속 1%·활강. 얼라 스카이본 유일 캐스터'}],
+ warlock:[
+  {r:'트롤(호)',pve:5,pvp:4,w:'신규. 재생 + 생명력 전환 시너지, 광폭화 시전'},
+  {r:'오크(호)',pve:5,pvp:5,w:'피의 격노 주문력, 펫 강화, 저주 해제'},
+  {r:'언데드(호)',pve:4,pvp:5,w:'무덤의 손길 + 생명력 흡수 = 파밍 무한, 공포 해제'},
+  {r:'노움(얼)',pve:5,pvp:5,w:'마나 5%·속박 면역·유레카. 얼라 흑마 정석'},
+  {r:'인간(얼)',pve:4,pvp:4,w:'기절 해제, 정신력'},
+  {r:'스카이본(얼)',pve:3,pvp:2,w:'가속 1%. 후순위'}]
+};
+
+
+const TREE={warrior:'warrior',paladin:'paladin',shaman:'shaman',hunter:'hunter',rogue:'rogue',druid:'druid',priest:'priest',mage:'mage',warlock:'warlock'};
+const treeLinks=id=>({
+  f:`https://www.wowhead.com/forever/ko/talent-calc/${TREE[id]}`,
+  c:`https://www.wowhead.com/classic/ko/talent-calc/${TREE[id]}`,
+  d:`https://classicwowforever.com/class-changes/${TREE[id]}/`});
+document.querySelector('#treetbl tbody').innerHTML=CLASSES.map(c=>{const l=treeLinks(c.id);return `<tr>
+ <td class="cls"><span style="background:${c.color}"></span>${c.name}</td>
+ <td><a href="${l.f}" target="_blank" rel="noopener">포에버 ${c.name} 트리</a></td>
+ <td><a href="${l.c}" target="_blank" rel="noopener">클래식 ${c.name} 트리</a></td>
+ <td><a href="${l.d}" target="_blank" rel="noopener">1.12 대비 변경 목록</a></td></tr>`}).join('');
+
+/* 종족 표 */
+document.querySelector('#races tbody').innerHTML=RACES.map(r=>`<tr>
+ <td class="cls">${r.n}<small>${r.f}</small></td><td>${r.a}</td><td>${r.p}</td>
+ <td>${pip(r.pvp)}<small>${r.pvpn}</small></td><td>${r.cls}</td></tr>`).join('');
+
+/* render overview */
+const ovb=document.querySelector('#overview tbody');
+ovb.innerHTML=CLASSES.map(c=>`<tr>
+ <td class="cls"><span style="background:${c.color}"></span>${c.name}</td>
+ <td>${pip(c.ov.lv)}<small>${c.ov.lvn}</small></td>
+ <td>${pip(c.ov.pve)}<small>${c.ov.pven}</small></td>
+ <td>${pip(c.ov.pvp)}<small>${c.ov.pvpn}</small></td>
+ <td>${c.ov.sum}</td></tr>`).join('');
+
+/* render rail + panels */
+const rail=document.getElementById('rail'),panels=document.getElementById('panels');
+CLASSES.forEach((c,i)=>{
+  rail.insertAdjacentHTML('beforeend',`<button class="cbtn" role="tab" aria-selected="${i===0}" aria-controls="p-${c.id}" style="--c:${c.color}"><svg><use href="#${c.icon}"/></svg>${c.name}</button>`);
+  panels.insertAdjacentHTML('beforeend',`<section class="cpanel ${i===0?'on':''}" id="p-${c.id}" style="--c:${c.color}" role="tabpanel">
+   <div class="chead"><div class="ico" style="color:${c.color}"><svg><use href="#${c.icon}"/></svg></div><div><h2>${c.name}</h2><div class="tag">${c.tag}</div></div></div>
+   <div class="base">${c.base}</div>
+   <p class="meta" style="margin:-8px 0 14px">특성 트리 열기: <a href="${treeLinks(c.id).f}" target="_blank" rel="noopener">포에버</a> · <a href="${treeLinks(c.id).c}" target="_blank" rel="noopener">클래식 1.12</a> · <a href="${treeLinks(c.id).d}" target="_blank" rel="noopener">변경점 비교</a> — 두 개를 각각 새 탭으로 열어 나란히 두고 보세요.</p>
+   <div class="races">${c.races.map(r=>`<span class="${/인간 사냥꾼|노움 사제|드워프 주술사|오크 마법사|트롤 흑마법사|언데드 성기사/.test(r+' '+c.name)?'new':''}">${r}</span>`).join('')}</div>
+   <div class="tablewrap" style="margin-bottom:20px"><table style="min-width:560px"><thead><tr><th>종족 추천 순</th><th>PvE</th><th>PvP</th><th>이유</th></tr></thead><tbody>${(RR[c.id]||[]).map(x=>`<tr><td class="cls">${x.r}</td><td>${pip(x.pve)}</td><td>${pip(x.pvp)}</td><td>${x.w}</td></tr>`).join('')}</tbody></table></div>
+   <div class="specs">${c.specs.map(s=>`<article class="spec">
+     <header><h3>${s.n}</h3><div class="role">${s.role}</div></header>
+     <div class="body">
+      <div class="blk"><h4>특성 개편 요점</h4><ul>${s.ch.map(x=>'<li>'+x+'</li>').join('')}</ul></div>
+      <div class="rate">
+        <span class="k">레벨링</span><span class="v">${pip(s.lv)}${s.lvn}</span>
+        <span class="k">만렙 PvE</span><span class="v">${pip(s.pve)}${s.pven}</span>
+        <span class="k">PvP</span><span class="v">${pip(s.pvp)}${s.pvpn}</span>
+      </div>
+      <div class="pc"><div class="p"><b>장점</b><ul>${s.pros.map(x=>'<li>'+x+'</li>').join('')}</ul></div><div class="m"><b>단점</b><ul>${s.cons.map(x=>'<li>'+x+'</li>').join('')}</ul></div></div>
+      <div class="blk racepick"><h4>추천 종족</h4>${s.race}</div>
+      <div class="opener"><h4 style="margin:0;font-size:12.5px;color:var(--ink3)">예상 오프너 <span class="badge b-pred">예측</span></h4><ol>${s.op.map(x=>'<li>'+x+'</li>').join('')}</ol><div class="note">${s.opn}</div></div>
+     </div></article>`).join('')}</div>
+  </section>`);
+});
+rail.addEventListener('click',e=>{
+  const b=e.target.closest('.cbtn');if(!b)return;
+  rail.querySelectorAll('.cbtn').forEach(x=>x.setAttribute('aria-selected',x===b));
+  panels.querySelectorAll('.cpanel').forEach(p=>p.classList.toggle('on',p.id===b.getAttribute('aria-controls')));
+  const y=rail.getBoundingClientRect().top+window.scrollY-8;window.scrollTo({top:y,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+});
+/* new-combo highlight fix: mark by pair */
+const NEW={hunter:['인간'],priest:['노움'],shaman:['드워프'],mage:['오크'],warlock:['트롤'],paladin:['언데드']};
+Object.entries(NEW).forEach(([id,rs])=>{document.querySelectorAll(`#p-${id} .races span`).forEach(s=>{if(rs.includes(s.textContent))s.classList.add('new');else s.classList.remove('new');});});
+document.querySelectorAll('.races span.new').forEach(s=>s.title='신규 조합');
+/* theme */
+const tb=document.getElementById('theme');
+try{const t=localStorage.getItem('wf-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}
+tb.addEventListener('click',()=>{const cur=document.documentElement.getAttribute('data-theme');const dark=cur?cur==='dark':matchMedia('(prefers-color-scheme: dark)').matches;const n=dark?'light':'dark';document.documentElement.setAttribute('data-theme',n);try{localStorage.setItem('wf-theme',n)}catch(e){}});
+</script>
+</body>
+</html>
