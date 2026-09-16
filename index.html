@@ -199,7 +199,7 @@ details.more summary::before{content:"▸ "}details.more[open] summary::before{c
       <span><span class="badge b-mine">시연빌드</span>블리즈컨 플레이 화면·툴팁 판독 (변경 가능)</span>
       <span><span class="badge b-pred">분석</span>커뮤니티 평가·오프너·별점 (검증 전)</span>
     </div>
-    <p class="meta">교차검증 기준일 2026-09-16 (v6.1: 주술사 PvP 재평가·베타 캡 20·출시 시각 확정) · 별점은 공식 순위가 아닌 사전 분석이며 5점 만점 · 기존 스킬의 한국어 명칭은 와우헤드 클래식 한국어 DB와 대조했고, 포에버 신규 스킬(관통 일격·맹독·목 베기·선견자의 격노·저격 사격 등)은 정식 번역 전 임시 번역입니다. 포에버 신규 기술은 정식 아이콘 공개 전까지 비슷한 기존 아이콘을 임시로 사용합니다.</p>
+    <p class="meta">교차검증 기준일 2026-09-16 (v6.2: 전사 오프너 격돌 표기 수정) · 별점은 공식 순위가 아닌 사전 분석이며 5점 만점 · 기존 스킬의 한국어 명칭은 와우헤드 클래식 한국어 DB와 대조했고, 포에버 신규 스킬(관통 일격·맹독·목 베기·선견자의 격노·저격 사격 등)은 정식 번역 전 임시 번역입니다. 포에버 신규 기술은 정식 아이콘 공개 전까지 비슷한 기존 아이콘을 임시로 사용합니다.</p>
   </div>
 </header>
 
@@ -286,7 +286,7 @@ const ICONS={
   '고통의 재앙':'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_curseofsargeras.jpg',
   '곰 변신':'https://wow.zamimg.com/images/wow/icons/medium/ability_racial_bearform.jpg',
   '공포':'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_possession.jpg',
-  '관통 일격':'https://wow.zamimg.com/images/wow/icons/medium/ability_warrior_shatteringthrow.jpg',
+  '관통 일격(신규·임시명)':'https://wow.zamimg.com/images/wow/icons/medium/ability_warrior_shatteringthrow.jpg',
   '광폭화':'https://wow.zamimg.com/images/wow/icons/medium/ability_druid_berserk.jpg',
   '광전사의 격노':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_ancestralguardian.jpg',
   '성난 해일':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_riptide.jpg',
@@ -428,7 +428,7 @@ const CLASSES=[
   lv:3,lvn:'승리의 돌진으로 처치 후 회복 가능. 그래도 붙는 동안 다운타임 김',pve:3,pven:'분노 대비 지속딜 낮음, 무기 대가로 무기 유연성',pvp:3,pvpn:'스펙 예측 C이나 낙마·필사·제압 발동으로 필드 1:1 여전히 강함',
   pros:['죽음의 일격 힐 감소','관통 일격 낙마 확정','제압 발동이 늘어 압박 밀도 상승'],cons:['속박·감속에 취약(혼자면 힘듦)','세계 버프 의존','분노 대비 트리가 덜 채워졌다는 평'],
   race:'<b>인간</b>(기절 해제·검 치명타 2%) 필드 / <b>노움</b>(속박·감속 면역) 전장 / <b>오크</b>(기절 20%↓, 강철 의지와 중첩) 호드',
-  op:[sk('돌진')+' → '+sk('무력화'),sk('죽음의 일격'),sk('제압')+' 발동 시 즉시',sk('성스러운 일격')+' 스윙 사이 삽입',sk('관통 일격')+' 탈것 상대 우선'],opn:'클래식 무기 사이클 + 피의 전율 발동 대응. 격돌 스윙 안 끊는다는 점만 새로움.'},
+  op:[sk('돌진')+' → '+sk('무력화'),sk('죽음의 일격'),sk('제압')+' 발동 시 즉시',sk('격돌')+' 스윙 사이 삽입',sk('관통 일격(신규·임시명)')+' 탈것 상대 우선'],opn:'클래식 무기 사이클 + 피의 전율 발동 대응. 격돌 스윙 안 끊는다는 점만 새로움.'},
  {n:'분노',role:'쌍수 근접 딜 / 레이드 물리딜',
   ch:[M+'무한한 격노: 최대 분노 +30',M+'강철 의지(방어→분노): 기절·공포 15% 감소',M+'격노 평준화: 피해 받으면 20% 확률 물리 피해 10% 12초',M+'쌍수 전문화·정밀함 대폭 상향, 광란은 너프',M+'광전사의 격노 강화: 이동 방해 전부 해제',M+'소용돌이 보조무기 타격, 죽음의 소원 피해 5% 증가로 변경'],
   lv:3,lvn:'양손 분노 레벨링 가능. 승리의 돌진이 숨통',pve:5,pven:'상향과 하향이 섞였지만 쌍수 특화 상향으로 종합 상향 예측',pvp:4,pvpn:'A 예측. 이동 방해 자가 해제로 카이팅 상대 개선',
