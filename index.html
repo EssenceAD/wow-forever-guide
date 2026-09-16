@@ -199,7 +199,7 @@ details.more summary::before{content:"▸ "}details.more[open] summary::before{c
       <span><span class="badge b-mine">시연빌드</span>블리즈컨 플레이 화면·툴팁 판독 (변경 가능)</span>
       <span><span class="badge b-pred">분석</span>커뮤니티 평가·오프너·별점 (검증 전)</span>
     </div>
-    <p class="meta">교차검증 기준일 2026-09-16 (v5.3: 사제 종족 기술 정정 포함) · 별점은 공식 순위가 아닌 사전 분석이며 5점 만점 · 한국어 기술명은 정식 번역 공개 전 임시 번역이 포함됩니다. 포에버 신규 기술은 정식 아이콘 공개 전까지 비슷한 기존 아이콘을 임시로 사용합니다.</p>
+    <p class="meta">교차검증 기준일 2026-09-16 (v5.4: 죽음의 일격 명칭 정정) · 별점은 공식 순위가 아닌 사전 분석이며 5점 만점 · 한국어 기술명은 정식 번역 공개 전 임시 번역이 포함됩니다. 포에버 신규 기술은 정식 아이콘 공개 전까지 비슷한 기존 아이콘을 임시로 사용합니다.</p>
   </div>
 </header>
 
@@ -392,7 +392,7 @@ const ICONS={
   '폭풍의 일격':'https://wow.zamimg.com/images/wow/icons/medium/ability_shaman_stormstrike.jpg',
   '표범 은신':'https://wow.zamimg.com/images/wow/icons/medium/ability_ambush.jpg',
   '피의 갈증':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_bloodlust.jpg',
-  '필사의 일격':'https://wow.zamimg.com/images/wow/icons/medium/ability_warrior_savageblow.jpg',
+  '죽음의 일격':'https://wow.zamimg.com/images/wow/icons/medium/ability_warrior_savageblow.jpg',
   '암습':'https://wow.zamimg.com/images/wow/icons/medium/ability_druid_supriseattack.jpg',
   '해충 떼':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_insectswarm.jpg',
   '화염 작열':'https://wow.zamimg.com/images/wow/icons/medium/spell_fire_fireball02.jpg',
@@ -424,11 +424,11 @@ const CLASSES=[
  ov:{lv:3,lvn:'솔로 레벨링 부담은 있으나 승리의 돌진 회복기 추가',pve:5,pven:'탱·물리딜 모두 최상위 수요',pvp:3,pvpn:'분노 A / 무기 C 예측, 지원 있을 때 최강',sum:'혼자 힘들고 파티에서 강한 클래식 공식 그대로. 낙마 확정 기술이 필드 PvP에서 큰 의미.'},
  specs:[
  {n:'무기',role:'양손 근접 딜 / PvP 전통 스펙',
-  ch:[M+'제압 강화 2행, 천둥벼락 강화는 방어로 이동',M+'피의 전율(신규): 근접 공격이 제압 발동 확률',M+'강타 강화: 글쿨·시전 0.5초 감소, 스윙 타이머 안 끊음, 26pt 행',M+'무력화 강화 속박 15% 유지, 필사의 일격 동일'],
+  ch:[M+'제압 강화 2행, 천둥벼락 강화는 방어로 이동',M+'피의 전율(신규): 근접 공격이 제압 발동 확률',M+'강타 강화: 글쿨·시전 0.5초 감소, 스윙 타이머 안 끊음, 26pt 행',M+'무력화 강화 속박 15% 유지, 죽음의 일격 동일'],
   lv:3,lvn:'승리의 돌진으로 처치 후 회복 가능. 그래도 붙는 동안 다운타임 김',pve:3,pven:'분노 대비 지속딜 낮음, 무기 대가로 무기 유연성',pvp:3,pvpn:'스펙 예측 C이나 낙마·필사·제압 발동으로 필드 1:1 여전히 강함',
-  pros:['필사의 일격 힐 감소','관통 일격 낙마 확정','제압 발동이 늘어 압박 밀도 상승'],cons:['속박·감속에 취약(혼자면 힘듦)','세계 버프 의존','분노 대비 트리가 덜 채워졌다는 평'],
+  pros:['죽음의 일격 힐 감소','관통 일격 낙마 확정','제압 발동이 늘어 압박 밀도 상승'],cons:['속박·감속에 취약(혼자면 힘듦)','세계 버프 의존','분노 대비 트리가 덜 채워졌다는 평'],
   race:'<b>인간</b>(기절 해제·검 치명타 2%) 필드 / <b>노움</b>(속박·감속 면역) 전장 / <b>오크</b>(기절 20%↓, 강철 의지와 중첩) 호드',
-  op:[sk('돌진')+' → '+sk('무력화'),sk('필사의 일격'),sk('제압')+' 발동 시 즉시',sk('성스러운 일격')+' 스윙 사이 삽입',sk('관통 일격')+' 탈것 상대 우선'],opn:'클래식 무기 사이클 + 피의 전율 발동 대응. 강타 스윙 안 끊는다는 점만 새로움.'},
+  op:[sk('돌진')+' → '+sk('무력화'),sk('죽음의 일격'),sk('제압')+' 발동 시 즉시',sk('성스러운 일격')+' 스윙 사이 삽입',sk('관통 일격')+' 탈것 상대 우선'],opn:'클래식 무기 사이클 + 피의 전율 발동 대응. 강타 스윙 안 끊는다는 점만 새로움.'},
  {n:'분노',role:'쌍수 근접 딜 / 레이드 물리딜',
   ch:[M+'무한한 격노: 최대 분노 +30',M+'강철 의지(방어→분노): 기절·공포 15% 감소',M+'격노 평준화: 피해 받으면 20% 확률 물리 피해 10% 12초',M+'쌍수 전문화·정밀함 대폭 상향, 광란은 너프',M+'광폭화 격노 강화: 이동 방해 전부 해제',M+'소용돌이 보조무기 타격, 죽음의 소원 피해 5% 증가로 변경'],
   lv:3,lvn:'양손 분노 레벨링 가능. 승리의 돌진이 숨통',pve:5,pven:'상향과 하향이 섞였지만 쌍수 특화 상향으로 종합 상향 예측',pvp:4,pvpn:'A 예측. 이동 방해 자가 해제로 카이팅 상대 개선',
