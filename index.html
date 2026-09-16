@@ -170,7 +170,7 @@ details.more summary::before{content:"▸ "}details.more[open] summary::before{c
       <span><span class="badge b-mine">캡처</span>블리즈컨 시연 화면·데이터마이닝 (수치 변경 가능)</span>
       <span><span class="badge b-pred">예측</span>커뮤니티 분석·티어 예측 (베타에서 검증 필요)</span>
     </div>
-    <p class="meta">기준일 2026-09-16 (v4: 시각화) · 베타 9/17 시작 · 출시 11/4 · 첫 레이드 12/9. 별점은 예측이며 5점 만점. 직업 문양은 이 페이지용으로 새로 그린 것입니다.</p>
+    <p class="meta">기준일 2026-09-16 (v4.1: 신규 스킬 임시 아이콘) · 베타 9/17 시작 · 출시 11/4 · 첫 레이드 12/9. 별점은 예측이며 5점 만점. 직업 문양은 이 페이지용으로 새로 그린 것이고, 포에버 신규 스킬(관통 일격·맹독·선견자의 격노 등)은 공식 아이콘 공개 전이라 비슷한 기존 아이콘을 임시로 썼습니다.</p>
   </div>
 </header>
 
@@ -241,7 +241,7 @@ const ICONS={
   '고통의 재앙':'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_curseofsargeras.jpg',
   '곰 변신':'https://wow.zamimg.com/images/wow/icons/medium/ability_racial_bearform.jpg',
   '공포':'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_possession.jpg',
-  '관통 일격':'',
+  '관통 일격':'https://wow.zamimg.com/images/wow/icons/medium/ability_warrior_shatteringthrow.jpg',
   '광폭화':'https://wow.zamimg.com/images/wow/icons/medium/ability_druid_berserk.jpg',
   '광폭화 격노':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_ancestralguardian.jpg',
   '급류':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_riptide.jpg',
@@ -258,13 +258,13 @@ const ICONS={
   '등 뒤 찌르기':'https://wow.zamimg.com/images/wow/icons/medium/ability_backstab.jpg',
   '마력 주입':'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_powerinfusion.jpg',
   '망치':'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_sealofmight.jpg',
-  '매 소환':'',
+  '매 소환':'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_owl.jpg',
   '매복':'https://wow.zamimg.com/images/wow/icons/medium/ability_rogue_ambush.jpg',
   '맹금 일격':'https://wow.zamimg.com/images/wow/icons/medium/ability_meleedamage.jpg',
-  '맹독':'',
+  '맹독':'https://wow.zamimg.com/images/wow/icons/medium/ability_rogue_deadlybrew.jpg',
   '몽구스 물기':'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_swiftstrike.jpg',
   '무력화':'https://wow.zamimg.com/images/wow/icons/medium/ability_shockwave.jpg',
-  '문장 교체':'',
+  '문장 부여':'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_sealofwisdom.jpg',
   '발화':'https://wow.zamimg.com/images/wow/icons/medium/spell_fire_sealoffire.jpg',
   '방패 막기':'https://wow.zamimg.com/images/wow/icons/medium/ability_defend.jpg',
   '방패 밀쳐내기':'https://wow.zamimg.com/images/wow/icons/medium/inv_shield_05.jpg',
@@ -274,26 +274,26 @@ const ICONS={
   '보호막':'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_powerwordshield.jpg',
   '복수':'https://wow.zamimg.com/images/wow/icons/medium/ability_warrior_revenge.jpg',
   '부패':'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_abominationexplosion.jpg',
-  '분노의 문장':'',
+  '분노의 문장':'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_sealofwrath.jpg',
   '불덩이 작렬':'https://wow.zamimg.com/images/wow/icons/medium/spell_fire_flamebolt.jpg',
   '불태우기':'https://wow.zamimg.com/images/wow/icons/medium/spell_fire_soulburn.jpg',
   '비전 사격':'https://wow.zamimg.com/images/wow/icons/medium/ability_impalingbolt.jpg',
   '비전 폭발':'https://wow.zamimg.com/images/wow/icons/medium/spell_arcane_blast.jpg',
   '비전 화살':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_starfall.jpg',
   '빛의 섬광':'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_flashheal.jpg',
-  '빛의 의무':'',
+  '빛의 의무':'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_holybolt.jpg',
   '사냥꾼의 징표':'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_snipershot.jpg',
   '사악한 일격':'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_ritualofsacrifice.jpg',
   '생명력 착취':'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_requiem.jpg',
   '생명력 흡수':'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_lifedrain02.jpg',
   '서리 화살':'https://wow.zamimg.com/images/wow/icons/medium/spell_frost_frostbolt02.jpg',
-  '선견자의 격노':'',
+  '선견자의 격노':'https://wow.zamimg.com/images/wow/icons/medium/spell_shaman_ancestralawakening.jpg',
   '성스러운 일격':'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_surgeoflight.jpg',
   '소각':'https://wow.zamimg.com/images/wow/icons/medium/spell_fire_burnout.jpg',
   '소용돌이':'https://wow.zamimg.com/images/wow/icons/medium/ability_whirlwind.jpg',
   '순간 치유':'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_flashheal.jpg',
-  '스트라이더 킥':'',
-  '신성 일격':'',
+  '스트라이더 킥':'https://wow.zamimg.com/images/wow/icons/medium/ability_monk_roundhousekick.jpg',
+  '신성 일격':'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_crusaderstrike.jpg',
   '신성 충격':'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_searinglight.jpg',
   '신성한 방패':'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_blessingofprotection.jpg',
   '신성한 불꽃':'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_searinglight.jpg',
@@ -310,7 +310,7 @@ const ICONS={
   '얼음 창':'https://wow.zamimg.com/images/wow/icons/medium/spell_frost_frostblast.jpg',
   '얼음 회오리':'https://wow.zamimg.com/images/wow/icons/medium/spell_frost_frostnova.jpg',
   '얽힌 뿌리':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_stranglevines.jpg',
-  '엘룬의 빛':'',
+  '엘룬의 빛':'https://wow.zamimg.com/images/wow/icons/medium/spell_holy_elunesgrace.jpg',
   '여행 형상':'https://wow.zamimg.com/images/wow/icons/medium/ability_druid_travelform.jpg',
   '연쇄 번개':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_chainlightning.jpg',
   '연쇄 치유':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_healingwavegreater.jpg',
@@ -322,7 +322,7 @@ const ICONS={
   '유령 늑대':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_spiritwolf.jpg',
   '일제 사격':'https://wow.zamimg.com/images/wow/icons/medium/ability_marksmanship.jpg',
   '자연의 신속함':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_ravenform.jpg',
-  '저격 사격':'',
+  '저격 사격':'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_snipertraining.jpg',
   '절개':'https://wow.zamimg.com/images/wow/icons/medium/ability_rogue_eviscerate.jpg',
   '절단':'https://wow.zamimg.com/images/wow/icons/medium/ability_rogue_shadowstrikes.jpg',
   '점멸':'https://wow.zamimg.com/images/wow/icons/medium/spell_arcane_blink.jpg',
@@ -353,7 +353,7 @@ const ICONS={
   '화염 충격':'https://wow.zamimg.com/images/wow/icons/medium/spell_fire_flameshock.jpg',
   '회복':'https://wow.zamimg.com/images/wow/icons/medium/spell_nature_rejuvenation.jpg',
   '흉포한 이빨':'https://wow.zamimg.com/images/wow/icons/medium/ability_druid_ferociousbite.jpg',
-  '희망 흡수':''
+  '희망 흡수':'https://wow.zamimg.com/images/wow/icons/medium/spell_shadow_lifedrain02.jpg'
 };
 const F='<span class="badge b-fact">공식</span>',M='<span class="badge b-mine">캡처</span>',P='<span class="badge b-pred">예측</span>';
 const pip=n=>'<span class="bar" aria-label="'+n+'/5"><i style="width:'+(n*20)+'%"></i><b>'+n+'</b></span>';
@@ -407,7 +407,7 @@ const CLASSES=[
   lv:3,lvn:'신성 일격·신성화로 클래식보다 확실히 낫다',pve:3,pven:'기능은 하나 상향폭이 다른 스펙보다 작다는 평',pvp:3,pvpn:'B 예측. 폭딜은 있으나 카이팅 상대 답 없음',
   pros:['문장 트위스팅이 쉬워짐','왕축·인내·정화·기절 유지'],cons:['차단 없음','감속 없음','다른 트리보다 덜 받았다는 평'],
   race:'<b>인간</b>(기절 해제로 1:1 우위, 검 치명타) / <b>언데드</b>(공포 해제)',
-  op:[sk('심판')+' (문장 유지됨)',sk('문장 교체')+' → 빛의 비틀기 발동',sk('신성 일격'),sk('망치')+' 기절 후 폭딜'],opn:'문장 A 심판 → 문장 B 부여 → 다음 자동공격에 A+B. 정확한 타이밍은 베타 확인.'}
+  op:[sk('심판')+' (문장 유지됨)',sk('문장 부여')+' → 빛의 비틀기 발동',sk('신성 일격'),sk('망치')+' 기절 후 폭딜'],opn:'문장 A 심판 → 문장 B 부여 → 다음 자동공격에 A+B. 정확한 타이밍은 베타 확인.'}
  ]},
 
 {id:'shaman',name:'주술사',color:'#0070DE',icon:'i-shaman',tag:'정령 하이브리드, 호드 + 드워프·스카이본(호드)',
