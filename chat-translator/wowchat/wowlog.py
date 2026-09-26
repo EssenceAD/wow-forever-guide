@@ -251,10 +251,13 @@ _ESCAPES = [
     (re.compile(r"\|K[^|]*\|k"), "?"),
 ]
 
-_NAME = r"\[?(?P<name>[^\s:\[\]]+?)\]?"
+# 이름: [대괄호 안]이면 공백 허용 (Forever는 "[이름 이름]"처럼 두 단어로 기록하기도 함)
+_NAME = r"(?:\[(?P<bname>[^\[\]]{1,48}?)\]|(?P<name>[^\s:\[\]]+?))"
+# 채널 뒤 이름은 대괄호가 없어도 공백 허용
+_CNAME = r"(?:\[(?P<bname>[^\[\]]{1,48}?)\]|(?P<name>[^:\[\]]{1,48}?))"
 
 # 1) [채널] 이름: 내용
-_BRACKET_RE = re.compile(r"^\[(?P<chan>[^\]]+)\]\s*" + _NAME + r"\s*:\s?(?P<msg>.*)$")
+_BRACKET_RE = re.compile(r"^\[(?P<chan>[^\]]+)\]\s*" + _CNAME + r"\s*:\s?(?P<msg>.*)$")
 # 2) 귓속말/외침/말하기 (영문·한글 클라이언트)
 _SIMPLE_RES = [
     (re.compile(r"^" + _NAME + r" whispers\s*:\s?(?P<msg>.*)$"), WHISPER, "귓속말", False),
@@ -283,8 +286,18 @@ def _clean(text: str) -> str:
     return text.strip()
 
 
+def _name_of(m) -> str:
+    return (m.group("bname") or m.group("name") or "").strip()
+
+
 def _strip_realm(name: str) -> str:
-    return name.split("-", 1)[0] if "-" in name else name
+    """'Name-Realm' → 'Name', '이름 이름'처럼 같은 단어 반복 → '이름'."""
+    parts = []
+    for w in name.split():
+        w = w.split("-", 1)[0] if "-" in w else w
+        if w and w not in parts:
+            parts.append(w)
+    return " ".join(parts) or name
 
 
 def _parse_time(m) -> _dt.datetime:
@@ -345,13 +358,13 @@ def parse_line(line: str) -> Optional[ChatLine]:
         msg = bm.group("msg").strip()
         if not msg:
             return None
-        return ChatLine(kind, label, _strip_realm(bm.group("name")), msg, when, False, raw)
+        return ChatLine(kind, label, _strip_realm(_name_of(bm)), msg, when, False, raw)
 
     for pat, kind, label, outgoing in _SIMPLE_RES:
         sm = pat.match(body)
         if not sm:
             continue
-        name = sm.group("name")
+        name = _name_of(sm)
         if name.lower() in _NOT_A_NAME or name.isdigit():
             return None
         msg = sm.group("msg").strip()
