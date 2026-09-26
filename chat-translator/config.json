@@ -1,0 +1,10 @@
+{
+  "model": "claude-haiku-4-5",
+  "daily_limit": 1000,
+  "log_path": "",
+  "max_lines": 200,
+  "poll_interval_ms": 250,
+  "delay_warn_seconds": 3,
+  "font_size": 11,
+  "save_unknown_lines": true
+}
