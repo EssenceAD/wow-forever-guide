@@ -37,14 +37,54 @@ def _drives() -> List[str]:
     return [f"{d}:\\" for d in string.ascii_uppercase if os.path.exists(f"{d}:\\")]
 
 
+def _battlenet_install_paths() -> List[str]:
+    """Battle.net이 기록해 둔 게임 설치 경로 (product.db 안의 문자열)."""
+    out = []
+    pd = os.environ.get("ProgramData", r"C:\ProgramData")
+    db = os.path.join(pd, "Battle.net", "Agent", "product.db")
+    try:
+        with open(db, "rb") as f:
+            data = f.read()
+    except OSError:
+        return out
+    for m in re.finditer(rb"[A-Za-z]:[/\\][^\x00-\x1f\"<>|?*]{2,200}", data):
+        p = m.group(0).decode("utf-8", errors="ignore").rstrip("\\/ ")
+        if "warcraft" in p.lower() or "wow" in p.lower():
+            if os.path.isdir(p) and p not in out:
+                out.append(p)
+    return out
+
+
 def candidate_wow_roots() -> List[str]:
     roots = []
+
+    def add(p):
+        p = os.path.normpath(p)
+        if os.path.isdir(p) and p not in roots:
+            roots.append(p)
+
+    for p in _battlenet_install_paths():
+        add(p)
+        add(os.path.dirname(p))  # product.db가 _xxx_ 폴더 자체를 가리킬 때
     for drive in _drives():
         for parent in _PARENTS:
             for name in _WOW_DIR_NAMES:
-                p = os.path.join(drive, parent, name)
-                if os.path.isdir(p):
-                    roots.append(p)
+                add(os.path.join(drive, parent, name))
+        # 드라이브 바로 아래 / 한 단계 아래의 '*warcraft*' 폴더
+        try:
+            top = [os.path.join(drive, e) for e in os.listdir(drive)]
+        except OSError:
+            continue
+        for d in top:
+            low = os.path.basename(d).lower()
+            if "warcraft" in low or low in ("wow", "games", "game", "blizzard"):
+                add(d)
+                try:
+                    for e in os.listdir(d):
+                        if "warcraft" in e.lower() or e.lower().startswith("wow"):
+                            add(os.path.join(d, e))
+                except OSError:
+                    pass
     return roots
 
 
@@ -59,6 +99,9 @@ def candidate_log_paths(extra_roots: Optional[List[str]] = None) -> List[str]:
             entries = os.listdir(root)
         except OSError:
             continue
+        legacy = os.path.join(root, "Logs", LOG_NAME)  # _xxx_ 폴더 없는 옛 구조
+        if os.path.isdir(os.path.dirname(legacy)) and legacy not in found:
+            found.append(legacy)
         for e in entries:
             flavor_dir = os.path.join(root, e)
             if not (e.startswith("_") and e.endswith("_") and os.path.isdir(flavor_dir)):
@@ -98,9 +141,11 @@ class LogTailer:
         self._pos: Optional[int] = None
         self._ident = None
         self._partial = b""
+        self.size = 0
         if skip_existing and os.path.isfile(path):
             st = os.stat(path)
-            self._pos = st.st_size
+            self._pos = self._real_size() or 0
+            self.size = self._pos
             self._ident = self._identity(st)
         else:
             self._pos = 0 if os.path.isfile(path) else None
@@ -114,6 +159,16 @@ class LogTailer:
     def exists(self) -> bool:
         return os.path.isfile(self.path)
 
+    def _real_size(self) -> Optional[int]:
+        # 게임이 파일을 열어 둔 채 쓰는 동안 Windows의 os.stat 크기/수정시각은
+        # 갱신이 늦을 수 있다 → 파일을 직접 열어 끝 위치로 크기를 잰다.
+        try:
+            with open(self.path, "rb") as f:
+                f.seek(0, os.SEEK_END)
+                return f.tell()
+        except OSError:
+            return None
+
     def poll(self) -> List[str]:
         try:
             st = os.stat(self.path)
@@ -122,22 +177,26 @@ class LogTailer:
             self._pos = None
             self._partial = b""
             return []
+        size = self._real_size()
+        if size is None:
+            return []
 
         ident = self._identity(st)
-        if self._pos is None or ident != self._ident or st.st_size < self._pos:
+        if self._pos is None or ident != self._ident or size < self._pos:
             self._pos = 0
             self._partial = b""
         self._ident = ident
-        if st.st_size == self._pos:
+        if size == self._pos:
             return []
 
         try:
             with open(self.path, "rb") as f:
                 f.seek(self._pos)
-                data = f.read(st.st_size - self._pos)
+                data = f.read(size - self._pos)
         except OSError:
             return []
         self._pos += len(data)
+        self.size = self._pos
 
         data = self._partial + data
         parts = data.split(b"\n")

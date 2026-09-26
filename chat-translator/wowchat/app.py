@@ -112,11 +112,14 @@ class TranslatorApp:
         self.pool = ThreadPoolExecutor(max_workers=3)
         self.results: "queue.Queue" = queue.Queue()
 
-        self.tailer = None
-        self.log_path = None
+        self.tailers = {}  # 경로 → LogTailer (자동 모드에서는 모든 후보를 동시에 감시)
+        self.log_path = None  # 마지막으로 새 줄이 나온 로그
         self.log_auto = not self.cfg.get("log_path")
         self.delays = collections.deque(maxlen=15)
         self.last_line_at = None
+        self.lines_read = 0
+        self.lines_chat = 0
+        self.recent_raw = collections.deque(maxlen=15)
 
         self.entry_ids = collections.deque()
         self.next_id = 0
@@ -132,7 +135,7 @@ class TranslatorApp:
         self.root.after(200, self._poll_log)
         self.root.after(100, self._drain_results)
         self.root.after(500, self._update_status)
-        self.root.after(15000, self._rescan_log)
+        self.root.after(10000, self._rescan_log)
 
     # ------------------------------------------------------------------ UI
     def _build_ui(self):
@@ -189,6 +192,8 @@ class TranslatorApp:
         m = tk.Menu(menu_btn, tearoff=False)
         m.add_command(label="로그 파일 위치 직접 지정…", command=self._choose_log)
         m.add_command(label="로그 위치 자동 찾기로 되돌리기", command=self._reset_log_auto)
+        m.add_separator()
+        m.add_command(label="진단 정보 (로그가 안 읽힐 때)…", command=self._show_diagnostics)
         m.add_separator()
         m.add_command(label="API 키 변경…", command=lambda: self._ask_api_key(force=True))
         m.add_command(label="화면 지우기", command=self._clear)
@@ -327,19 +332,27 @@ class TranslatorApp:
         return key
 
     # ------------------------------------------------------------ 로그 선택
-    def _select_log(self, initial=False):
+    def _wanted_logs(self):
         if not self.log_auto:
-            path = self.cfg["log_path"]
-        else:
-            path = wowlog.pick_best_log(wowlog.candidate_log_paths())
-        if path and path != self.log_path:
-            self.log_path = path
-            self.tailer = wowlog.LogTailer(path, skip_existing=True)
-        elif not path and initial:
+            return [self.cfg["log_path"]]
+        return wowlog.candidate_log_paths()
+
+    def _select_log(self, initial=False):
+        """감시할 로그 목록을 갱신한다. 새로 추가된 파일은 기존 내용을 건너뛴다."""
+        wanted = self._wanted_logs()
+        for p in list(self.tailers):
+            if p not in wanted:
+                del self.tailers[p]
+        for p in wanted:
+            if p and p not in self.tailers:
+                self.tailers[p] = wowlog.LogTailer(p, skip_existing=True)
+        if self.log_path not in self.tailers:
+            self.log_path = None
+        if not self.tailers and initial:
             self.root.after(800, self._no_wow_found)
 
     def _no_wow_found(self):
-        if self.log_path:
+        if self.tailers:
             return
         if messagebox.askyesno(
             "와우 폴더를 못 찾음",
@@ -354,8 +367,9 @@ class TranslatorApp:
         d = filedialog.askdirectory(title="와우 Logs 폴더 선택 (WoWChatLog.txt가 생기는 곳)", parent=self.root)
         if not d:
             return
+        d = os.path.normpath(d)
         path = os.path.join(d, wowlog.LOG_NAME)
-        if os.path.basename(os.path.normpath(d)).lower() != "logs" and os.path.isdir(os.path.join(d, "Logs")):
+        if os.path.basename(d).lower() != "logs" and os.path.isdir(os.path.join(d, "Logs")):
             path = os.path.join(d, "Logs", wowlog.LOG_NAME)
         self.cfg["log_path"] = path
         self._write_config()
@@ -376,21 +390,21 @@ class TranslatorApp:
         _save_json(CONFIG_PATH, user)
 
     def _rescan_log(self):
-        # 자동 모드: 다른 버전 폴더의 로그가 더 최근이면 그쪽으로 따라간다
-        if self.log_auto:
-            best = wowlog.pick_best_log(wowlog.candidate_log_paths())
-            cur_ok = self.log_path and os.path.isfile(self.log_path)
-            if best and best != self.log_path and (not cur_ok or os.path.isfile(best)):
-                if not cur_ok or os.path.getmtime(best) > os.path.getmtime(self.log_path) + 5:
-                    self.log_path = best
-                    self.tailer = wowlog.LogTailer(best, skip_existing=True)
-        self.root.after(15000, self._rescan_log)
+        # 새로 설치된/새로 생긴 Logs 폴더도 따라붙는다
+        try:
+            self._select_log()
+        except Exception:
+            _log_error()
+        self.root.after(10000, self._rescan_log)
 
     # ------------------------------------------------------------ 로그 감시
     def _poll_log(self):
         try:
-            if self.tailer:
-                for line in self.tailer.poll():
+            for path, tailer in list(self.tailers.items()):
+                lines = tailer.poll()
+                if lines:
+                    self.log_path = path
+                for line in lines:
                     self._handle_line(line)
         except Exception:
             _log_error()
@@ -399,6 +413,8 @@ class TranslatorApp:
     def _handle_line(self, line: str):
         now = _dt.datetime.now()
         self.last_line_at = now
+        self.lines_read += 1
+        self.recent_raw.append(line)
         ts = wowlog.line_timestamp(line)
         if ts is not None:
             d = (now - ts).total_seconds()
@@ -410,6 +426,7 @@ class TranslatorApp:
             if self.cfg.get("save_unknown_lines"):
                 self._note_unknown(line)
             return
+        self.lines_chat += 1
         if not self.filter_vars[chat.channel].get():
             return
 
@@ -587,6 +604,60 @@ class TranslatorApp:
     def _set_reply_info(self, text, color):
         self.reply_info.configure(text=text, fg=color)
 
+    # ------------------------------------------------------------ 진단
+    def _diagnostics_text(self) -> str:
+        now = _dt.datetime.now()
+        out = [f"진단 시각: {now:%Y-%m-%d %H:%M:%S}",
+               f"모드: {'자동 찾기' if self.log_auto else '직접 지정'}",
+               f"읽은 줄: {self.lines_read} (채팅으로 인식: {self.lines_chat})",
+               f"마지막 새 줄: {self.last_line_at:%H:%M:%S}" if self.last_line_at else "마지막 새 줄: 없음",
+               "", "[감시 중인 로그 파일]"]
+        for p, t in self.tailers.items():
+            if os.path.isfile(p):
+                try:
+                    st = os.stat(p)
+                    real = t._real_size()
+                    ago = now.timestamp() - st.st_mtime
+                    out.append(f"- {p}\n    크기 {real:,}바이트 (stat {st.st_size:,}) · 수정 {ago:,.0f}초 전")
+                except OSError as e:
+                    out.append(f"- {p}\n    읽기 오류: {e}")
+            else:
+                out.append(f"- {p}\n    (파일 없음)")
+        if not self.tailers:
+            out.append("- 없음 → ⚙ 설정 → 로그 파일 위치 직접 지정")
+        out += ["", "[찾은 와우 폴더]"] + [f"- {r}" for r in wowlog.candidate_wow_roots()]
+        out += ["", "[최근 읽은 원본 줄]"] + (list(self.recent_raw) or ["(아직 없음)"])
+        return "\n".join(out)
+
+    def _show_diagnostics(self):
+        win = tk.Toplevel(self.root)
+        win.title("진단 정보")
+        win.configure(bg=BG)
+        win.attributes("-topmost", True)
+        txt = tk.Text(win, bg=BG2, fg=FG, wrap="word", width=90, height=28, font=self.f_orig[:2], relief="flat")
+        txt.pack(fill="both", expand=True, padx=6, pady=6)
+
+        def refresh():
+            txt.configure(state="normal")
+            txt.delete("1.0", "end")
+            txt.insert("1.0", self._diagnostics_text())
+            txt.configure(state="disabled")
+
+        def copy():
+            self.root.clipboard_clear()
+            self.root.clipboard_append(self._diagnostics_text())
+            self.root.update()
+            btn_copy.configure(text="복사됨 ✓")
+
+        bar = tk.Frame(win, bg=BG)
+        bar.pack(fill="x", padx=6, pady=(0, 6))
+        ttk.Button(bar, text="새로고침", command=refresh).pack(side="left")
+        btn_copy = ttk.Button(bar, text="전체 복사", command=copy)
+        btn_copy.pack(side="left", padx=4)
+        tk.Label(bar, text="채팅을 몇 줄 친 뒤 새로고침 → 크기가 늘어나는지 보세요",
+                 bg=BG, fg=FG_DIM, font=self.f_head).pack(side="left", padx=6)
+        refresh()
+
     # ------------------------------------------------------------ 상태줄
     def _update_status(self):
         parts = [f"오늘 번역 {self.usage.today}/{self.usage.daily_limit}회"]
@@ -594,15 +665,18 @@ class TranslatorApp:
         if self.translator is None:
             parts.append("API 키 없음")
             warn = True
-        if not self.log_path:
+        existing = [p for p in self.tailers if os.path.isfile(p)]
+        if not self.tailers:
             parts.append("로그 위치 모름 (⚙ 설정)")
             warn = True
-        elif not os.path.isfile(self.log_path):
+        elif self.log_path and self.last_line_at:
+            flavor = os.path.basename(os.path.dirname(os.path.dirname(self.log_path)))
+            parts.append(f"{flavor} 감시 중 ({self.lines_read}줄)")
+        elif not existing:
             parts.append("채팅 기록 꺼짐 → 게임에서 /chatlog")
             warn = True
         else:
-            flavor = os.path.basename(os.path.dirname(os.path.dirname(self.log_path)))
-            parts.append(f"{flavor} 감시 중")
+            parts.append(f"로그 {len(existing)}개 감시 중 · 새 줄 대기")
         if self.delays:
             d = statistics.median(self.delays)
             limit = float(self.cfg.get("delay_warn_seconds", 3))

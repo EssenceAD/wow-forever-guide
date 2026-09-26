@@ -46,6 +46,13 @@ class ParseTest(unittest.TestCase):
         self.check(ts + "小明: 你好", wowlog.SAY, "小明", "你好")
         self.check(ts + "小明님의 외침: 救命", wowlog.SAY, "小明", "救命")
 
+    def test_screenshot_lines(self):
+        ts = "9/26/2026 02:04:12.345-4  "
+        self.check(ts + "[1. 공개 - 스톰윈드] [咒魂终章]: [毛纺包]=10毛料，人在银行邮箱，直接组",
+                   wowlog.PUBLIC, "咒魂终章", "[毛纺包]=10毛料，人在银行邮箱，直接组")
+        self.check(ts + "[1. General - Stormwind City] [Hans-Everlook]: /w me für mehr Infos",
+                   wowlog.PUBLIC, "Hans", "/w me für mehr Infos")
+
     def test_color_codes_and_links(self):
         c = wowlog.parse_line("9/26 21:15:32.123  [Party] Bob: need |cff0070dd|Hitem:1234::|h[Cool Sword]|h|r ?")
         self.assertEqual(c.text, "need [Cool Sword] ?")
