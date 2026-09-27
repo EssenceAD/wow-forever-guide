@@ -175,7 +175,9 @@ class TranslatorApp:
             v = tk.BooleanVar(value=bool(saved.get(ch, DEFAULT_FILTERS[ch])))
             v.trace_add("write", lambda *_: self._save_state())
             self.filter_vars[ch] = v
-            ttk.Checkbutton(top, text=wowlog.CHANNEL_LABELS[ch], variable=v).grid(row=i // 3, column=i % 3, sticky="w", padx=(0, 8))
+            self._check(top, wowlog.CHANNEL_LABELS[ch], v).grid(row=i // 3, column=i % 3, sticky="w", padx=(0, 8))
+        tk.Label(top, text="✓ 켜진 채널만 번역", bg=BG, fg=FG_DIM, font=self.f_head).grid(
+            row=0, column=3, rowspan=2, sticky="e", padx=(8, 0))
 
         # --- 두 번째 줄: 투명도 / 항상 위 / 메뉴
         bar = tk.Frame(r, bg=BG)
@@ -185,7 +187,7 @@ class TranslatorApp:
         ttk.Scale(bar, from_=0.3, to=1.0, variable=self.alpha_var, length=110,
                   command=lambda _v: self._apply_alpha()).pack(side="left", padx=(4, 10))
         self.topmost_var = tk.BooleanVar(value=bool(self.state.get("topmost", True)))
-        ttk.Checkbutton(bar, text="항상 위", variable=self.topmost_var, command=self._apply_topmost).pack(side="left")
+        self._check(bar, "항상 위", self.topmost_var, self._apply_topmost).pack(side="left")
 
         menu_btn = tk.Menubutton(bar, text="⚙ 설정", bg=BG2, fg=FG, activebackground="#2a3340",
                                  activeforeground=FG, relief="flat", font=self.f_ui)
@@ -250,6 +252,12 @@ class TranslatorApp:
         self.text.tag_configure("fail", font=self.f_head, foreground=WARN, spacing3=4)
         for ch, color in CHANNEL_COLORS.items():
             self.text.tag_configure("ch_" + ch, foreground=color, font=self.f_head)
+
+    def _check(self, parent, text, var, command=None):
+        # 표준 체크박스 (✓ 표시). ttk clam 테마는 켜짐을 X로 그려서 헷갈린다.
+        return tk.Checkbutton(parent, text=text, variable=var, command=command, bg=BG, fg=FG,
+                              selectcolor=BG2, activebackground=BG, activeforeground=FG,
+                              highlightthickness=0, bd=0, font=self.f_ui)
 
     def _restore_window(self):
         geo = self.state.get("geometry")
